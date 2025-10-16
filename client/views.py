@@ -6,7 +6,7 @@ from .models import Client
 
 def liste_clients(request):
     clients = Client.objects.all()
-    return render(request, '/clients/liste_clients.html', {'clients': clients})
+    return render(request, 'clients/liste_clients.html', {'clients': clients})
 
 
 def ajouter_client(request):

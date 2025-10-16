@@ -3,6 +3,7 @@ from django.contrib import messages
 from .models import MouvementStock
 from produit.models import Produit
 from fournisseur.models import Fournisseur
+from utilisateur.models import Utilisateur
 from client.models import Client
 
 # Create your views here.

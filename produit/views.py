@@ -4,9 +4,8 @@ from .models import Produit, Categorie
 # Create your views here.
 
 def liste_produits(request):
-    """Afficher la liste de tous les produits"""
     produits = Produit.objects.select_related('categorie').all()
-    return render(request, 'produits/liste.html', {'produits': produits})
+    return render(request, 'produits/liste_produits.html', {'produits': produits})
 
 
 def ajouter_produit(request):
@@ -22,7 +21,8 @@ def ajouter_produit(request):
         seuil_min = request.POST.get('seuil_min')
         seuil_max = request.POST.get('seuil_max')
         stock_actuel = request.POST.get('stock_actuel')
-
+        
+        # Verifie si la categorie existe
         categorie = Categorie.objects.get(id=categorie_id) if categorie_id else None
 
         Produit.objects.create(
