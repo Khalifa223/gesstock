@@ -14,7 +14,7 @@ class Produit(models.Model):
     categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, related_name="produits")
     prix_achat = models.DecimalField(max_digits=10, decimal_places=2)
     prix_vente = models.DecimalField(max_digits=10, decimal_places=2)
-    code_barre = models.CharField(max_length=100, blank=True, null=True)
+    code_barre_image = models.ImageField(upload_to='barcodes/', blank=True)
     seuil_min = models.PositiveIntegerField(default=0)
     seuil_max = models.PositiveIntegerField(default=100)
     stock_actuel = models.PositiveIntegerField(default=0)
