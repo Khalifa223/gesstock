@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum, F, Count
 from django.contrib import messages
 from .models import MouvementStock
 from produit.models import Produit
@@ -12,6 +13,33 @@ def liste_mouvements(request):
     mouvements = MouvementStock.objects.select_related('produit', 'utilisateur', 'fournisseur', 'client').order_by('-date_mouvement')
     return render(request, 'stocks/liste_mouvements.html', {'mouvements': mouvements})
 
+
+def liste_stocks(request):
+    """
+    Afficher la liste des produits avec leurs niveaux de stock
+    et les éventuelles alertes (rupture ou surstock).
+    """
+    produits = Produit.objects.select_related('categorie').all()
+    alertes = []
+
+    for produit in produits:
+        if produit.stock_actuel <= produit.seuil_min:
+            alertes.append({
+                'type': 'danger',
+                'message': f"Le produit '{produit.nom}' est en rupture ou proche du seuil minimum."
+            })
+        elif produit.stock_actuel >= produit.seuil_max:
+            alertes.append({
+                'type': 'warning',
+                'message': f"Le produit '{produit.nom}' dépasse le seuil maximum défini."
+            })
+
+    return render(request, 'stock/liste_stocks.html', {
+        'produits': produits,
+        'alertes': alertes,
+        'titre': 'Gestion des Stocks'
+    })
+    
 
 def ajouter_entree(request):
     produits = Produit.objects.all()
@@ -40,7 +68,11 @@ def ajouter_entree(request):
         produit.stock_actuel += quantite
         produit.save()
 
-        messages.success(request, f"Entrée enregistrée : +{quantite} unités pour {produit.nom}")
+        # Vérification des alertes
+        if produit.stock_actuel >= produit.seuil_max:
+            messages.warning(request, f"Alerte : Le produit '{produit.nom}' a atteint le seuil maximum.")
+        else:
+            messages.success(request, f"Entrée enregistrée : {quantite} unité(s) ajoutée(s) à '{produit.nom}'.")
         return redirect('liste_mouvements')
 
     return render(request, 'stocks/ajouter_entree.html', {
@@ -80,8 +112,12 @@ def ajouter_sortie(request):
         # Mise à jour du stock
         produit.stock_actuel -= quantite
         produit.save()
-
-        messages.success(request, f"Sortie enregistrée : -{quantite} unités pour {produit.nom}")
+        
+        # Vérification des alertes
+        if produit.stock_actuel <= produit.seuil_min:
+            messages.error(request, f"Alerte : Le produit '{produit.nom}' est en dessous du seuil minimum.")
+        else:
+            messages.success(request, f"Sortie enregistrée : {quantite} unité(s) retirée(s) de '{produit.nom}'.")
         return redirect('liste_mouvements')
 
     return render(request, 'stocks/ajouter_sortie.html', {
@@ -161,3 +197,84 @@ def supprimer_mouvement(request, id):
 def tableau_stock(request):
     produits = Produit.objects.select_related('categorie').all()
     return render(request, 'stocks/tableau_stock.html', {'produits': produits})
+
+
+def consultation_stocks(request):
+    """
+    Affiche la liste de tous les produits avec leurs niveaux de stock en temps réel.
+    Met aussi en évidence les produits en rupture ou en surstock.
+    """
+    produits = Produit.objects.select_related('categorie').all()
+
+    # Détection des produits en rupture ou en surstock
+    ruptures = produits.filter(stock_actuel__lte=F('seuil_min'))
+    surstocks = produits.filter(stock_actuel__gte=F('seuil_max'))
+
+    contexte = {
+        'produits': produits,
+        'ruptures': ruptures,
+        'surstocks': surstocks,
+        'titre': 'Consultation du stock en temps réel',
+    }
+
+    return render(request, 'stocks/consultation_stocks.html', contexte)
+
+
+def produits_en_alerte(request):
+    """
+    Liste les produits dont le niveau de stock est inférieur ou égal au seuil minimum (alerte de rupture)
+    ou supérieur au seuil maximum (alerte de surstock).
+    """
+    produits_rupture = Produit.objects.filter(stock_actuel__lte=F('seuil_min'))
+    produits_surstocks = Produit.objects.filter(stock_actuel__gte=F('seuil_max'))
+
+    contexte = {
+        'produits_rupture': produits_rupture,
+        'produits_surstocks': produits_surstocks,
+        'titre': 'Alertes de stock',
+    }
+
+    return render(request, 'stocks/produits_en_alerte.html', contexte)
+
+
+# ==========================================================
+# 🔄 LES PRODUITS LES PLUS VENDUS
+# ==========================================================
+
+def produits_plus_vendus(request):
+    """
+    Statistiques détaillées sur les produits les plus vendus.
+    """
+    produits_plus_vendus = (
+        MouvementStock.objects
+        .filter(type_mouvement='SORTIE')
+        .values('produit__nom', 'produit__categorie__nom')
+        .annotate(total_vendu=Sum('quantite'))
+        .order_by('-total_vendu')
+    )
+
+    return render(request, 'rapports/produits_plus_vendus.html', {
+        'produits_vendus': produits_plus_vendus,
+        'titre': 'Produits les plus vendus'
+    })
+
+# ==========================================================
+# 🔄 LES FOURNISEURS LES PLUS UTILISES
+# ==========================================================
+
+def fournisseurs_plus_utilises(request):
+    """
+    Statistiques détaillées sur les fournisseurs les plus sollicités.
+    """
+    fournisseurs_utilises = (
+        MouvementStock.objects
+        .filter(type_mouvement='ENTREE')
+        .values('fournisseur__nom', 'fournisseur__contact')
+        .annotate(total_entrees=Count('id'), quantite_totale=Sum('quantite'))
+        .order_by('-quantite_totale')
+    )
+
+    return render(request, 'rapports/fournisseurs_plus_utilises.html', {
+        'fournisseurs_utilises': fournisseurs_utilises,
+        'titre': 'Fournisseurs les plus utilisés'
+    })
