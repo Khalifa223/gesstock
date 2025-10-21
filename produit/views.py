@@ -45,7 +45,7 @@ def ajouter_produit(request):
             categorie=categorie,
             prix_achat=prix_achat or 0,
             prix_vente=prix_vente or 0,
-            code_barre=code_barre,
+            code_barre_image=code_barre,
             seuil_min=seuil_min or 0,
             seuil_max=seuil_max or 0,
             stock_actuel=stock_actuel or 0

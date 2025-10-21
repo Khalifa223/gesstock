@@ -1,8 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Utilisateur
 
 # Create your views here.
+def connexion_utilisateur(request):
+    """
+    Authentifie un utilisateur avec son nom d'utilisateur et mot de passe.
+    """
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, f"Bienvenue {user.username} !")
+            return redirect('liste_utilisateurs')  # redirige vers tableau de bord après connexion
+        else:
+            messages.error(request, "Nom d’utilisateur ou mot de passe incorrect.")
+            return redirect('connexion_utilisateur')
+
+    return render(request, 'utilisateurs/connexion.html')
+
+
+def deconnexion_utilisateur(request):
+    """
+    Déconnecte l’utilisateur actuellement connecté.
+    """
+    logout(request)
+    messages.info(request, "Vous avez été déconnecté.")
+    return redirect('connexion_utilisateur')
+
 
 def ajouter_utilisateur(request):
     if request.method == 'POST':
