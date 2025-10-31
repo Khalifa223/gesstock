@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Supprimer Fournisseur</title>
+<style>
+body { font-family:Arial; background:#f5f6fa; padding:20px; text-align:center; }
+.box {
+  background:white; display:inline-block; padding:30px;
+  border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+button { padding:10px 20px; border:none; border-radius:5px; cursor:pointer; }
+.btn-del { background:#e74c3c; color:white; }
+.btn-back { background:#7f8c8d; color:white; text-decoration:none; padding:10px 20px; border-radius:5px; }
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Supprimer ce fournisseur ?</h2>
+    <p><strong>{{ fournisseur.nom }}</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn-del" type="submit">Oui, supprimer</button>
+        <a class="btn-back" href="{% url 'liste_fournisseurs' %}">Annuler</a>
+    </form>
+</div>
+
+</body>
+</html>
