@@ -26,7 +26,7 @@ def details_rapport(request, id):
     mouvements = rapport.mouvements.select_related('produit', 'utilisateur').all()
     produits = rapport.produits.all()
 
-    return render(request, 'rapports/details.html', {
+    return render(request, 'rapports/details_rapport.html', {
         'rapport': rapport,
         'mouvements': mouvements,
         'produits': produits,
@@ -81,7 +81,7 @@ def generer_rapport(request):
         messages.success(request, f"{titre} généré avec succès.")
         return redirect('liste_rapports')
 
-    return render(request, 'rapports/generer.html', {'titre': 'Générer un rapport'})
+    return render(request, 'rapports/generer_rapport.html', {'titre': 'Générer un rapport'})
 
 
 def exporter_rapport_csv(request, id):

@@ -22,7 +22,7 @@ def connexion_utilisateur(request):
             messages.error(request, "Nom d’utilisateur ou mot de passe incorrect.")
             return redirect('connexion_utilisateur')
 
-    return render(request, 'utilisateurs/connexion.html')
+    return render(request, 'utilisateurs/connexion_utilisateur.html')
 
 
 def deconnexion_utilisateur(request):
@@ -124,4 +124,4 @@ def profil_utilisateur(request):
         messages.success(request, "Profil mis à jour avec succès.")
         return redirect('profil_utilisateur')
 
-    return render(request, 'utilisateurs/profil.html', {'utilisateur': utilisateur})
+    return render(request, 'utilisateurs/profil_utilisateur.html', {'utilisateur': utilisateur})
