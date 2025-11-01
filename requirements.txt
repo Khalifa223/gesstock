@@ -1,7 +1,6 @@
 asgiref==3.8.1
 charset-normalizer==3.4.4
 Django==5.1.7
-django-crispy-forms==2.3
 et_xmlfile==2.0.0
 mysqlclient==2.2.7
 numpy==2.2.6

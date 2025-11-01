@@ -1,31 +1,17 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Supprimer Client</title>
-<style>
-body { font-family:Arial; background:#f5f6fa; padding:20px; text-align:center; }
-.box {
-  background:white; display:inline-block; padding:30px;
-  border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
-}
-button { padding:10px 20px; border:none; border-radius:5px; cursor:pointer; }
-.btn-del { background:#e74c3c; color:white; }
-.btn-back { background:#7f8c8d; color:white; text-decoration:none; padding:10px 20px; border-radius:5px; }
-</style>
-</head>
-<body>
+{% extends 'gesstock/base.html' %}
 
-<div class="box">
-    <h2>Supprimer ce client ?</h2>
-    <p><strong>{{ client.nom }}</strong></p>
+{% block content %}
+  <div class="box">
+    <h2>Supprimer le client <strong>{{ client.nom }}</strong>?</h2>
+
+
 
     <form method="post">
-        {% csrf_token %}
+      {% csrf_token %}
+      <div class="suppression">
         <button class="btn-del" type="submit">Oui, supprimer</button>
         <a class="btn-back" href="{% url 'liste_clients' %}">Annuler</a>
+      </div>
     </form>
-</div>
-
-</body>
-</html>
+  </div>
+{% endblock %}

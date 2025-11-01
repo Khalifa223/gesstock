@@ -1,28 +1,5 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Modifier Client</title>
-<style>
-body { background:#ecf0f1; font-family:Arial; padding:20px; }
-.form-container {
-  width:400px; background:white; margin:auto; padding:20px;
-  border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
-}
-input {
-  width:100%; padding:10px; margin:8px 0;
-  border:1px solid #bdc3c7; border-radius:5px;
-}
-button {
-  width:100%; padding:10px; background:#f39c12; color:white;
-  border:none; border-radius:5px; cursor:pointer;
-}
-button:hover { background:#e67e22; }
-a { text-decoration:none; color:#2980b9; font-size:14px; }
-</style>
-</head>
-<body>
-
+{% extends 'gesstock/base.html' %}
+{% block content %}
 <div class="form-container">
     <h2>Modifier Client</h2>
     <form method="post">
@@ -35,7 +12,5 @@ a { text-decoration:none; color:#2980b9; font-size:14px; }
     </form>
     <br>
     <a href="{% url 'liste_clients' %}">Retour</a>
-</div>
 
-</body>
-</html>
+{% endblock content %}

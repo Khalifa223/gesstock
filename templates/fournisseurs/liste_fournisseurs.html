@@ -1,75 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Liste des Fournisseurs</title>
-<style>
-body { font-family: Arial, sans-serif; background:#f5f6fa; margin:0; padding:20px; }
-.container { max-width:900px; margin:auto; }
-h2 { color:#333; text-align:center; }
+{% extends 'gesstock/base.html' %}
 
-.table {
-  width:100%;
-  border-collapse: collapse;
-  background:#fff;
-  border-radius:8px;
-  overflow:hidden;
-}
-.table th, .table td {
-  padding:12px;
-  border-bottom:1px solid #ddd;
-  text-align:left;
-}
-.table th { background:#8e44ad; color:white; }
-.table tr:hover { background:#ecf0f1; }
-
-.btn {
-  padding: 8px 12px;
-  color:white;
-  text-decoration:none;
-  border-radius:5px;
-  font-size:14px;
-}
-.btn-add { background:#27ae60; }
-.btn-edit { background:#f39c12; }
-.btn-delete { background:#e74c3c; }
-.top-buttons { text-align:right; margin-bottom:10px; }
-</style>
-</head>
-<body>
-
-<div class="container">
+{% block content %}
+  <div class="container">
     <h2>Liste des Fournisseurs</h2>
 
     <div class="top-buttons">
-        <a href="{% url 'ajouter_fournisseur' %}" class="btn btn-add">+ Ajouter Fournisseur</a>
+      <a href="{% url 'ajouter_fournisseur' %}" class="btn btn-add">+ Ajouter Fournisseur</a>
     </div>
 
     <table class="table">
-        <tr>
-            <th>Nom</th>
-            <th>Contact</th>
-            <th>Adresse</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
+      <tr>
+        <th>Nom</th>
+        <th>Contact</th>
+        <th>Adresse</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
 
-        {% for fournisseur in fournisseurs %}
+      {% for fournisseur in fournisseurs %}
         <tr>
-            <td>{{ fournisseur.nom }}</td>
-            <td>{{ fournisseur.contact }}</td>
-            <td>{{ fournisseur.adresse }}</td>
-            <td>{{ fournisseur.email }}</td>
-            <td>
-                <a class="btn btn-edit" href="{% url 'modifier_fournisseur' fournisseur.id %}">Modifier</a>
-                <a class="btn btn-delete" href="{% url 'supprimer_fournisseur' fournisseur.id %}">Supprimer</a>
-            </td>
+          <td>{{ fournisseur.nom }}</td>
+          <td>{{ fournisseur.contact }}</td>
+          <td>{{ fournisseur.adresse }}</td>
+          <td>{{ fournisseur.email }}</td>
+          <td>
+            <a class="btn btn-edit" href="{% url 'modifier_fournisseur' fournisseur.id %}">Modifier</a>
+            <a class="btn btn-delete" href="{% url 'supprimer_fournisseur' fournisseur.id %}">Supprimer</a>
+          </td>
         </tr>
-        {% empty %}
-        <tr><td colspan="5">Aucun fournisseur trouvé</td></tr>
-        {% endfor %}
+      {% empty %}
+        <tr>
+          <td colspan="5">Aucun fournisseur trouvé</td>
+        </tr>
+      {% endfor %}
     </table>
-</div>
-
-</body>
-</html>
+  </div>
+{% endblock %}

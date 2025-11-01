@@ -1,0 +1,189 @@
+/* ======== RESET & BASE ======== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f4f6f9;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* ======== SIDEBAR ======== */
+    .sidebar {
+      width: 250px;
+      background-color: #1f2937;
+      color: #fff;
+      transition: width 0.3s, left 0.3s;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100;
+    }
+
+    /* Réduction du texte sur mobile */
+    .sidebar.collapsed {
+      width: 70px;
+    }
+
+    .sidebar .logo {
+      font-size: 1.5rem;
+      text-align: center;
+      padding: 20px 0;
+      font-weight: bold;
+      border-bottom: 1px solid #374151;
+      transition: font-size 0.3s;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 10px 0;
+      flex-grow: 1;
+    }
+
+    .sidebar ul li {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .sidebar ul li:hover {
+      background-color: #374151;
+    }
+
+    .sidebar ul li i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+    }
+
+    .sidebar.collapsed ul li span {
+      display: none;
+    }
+
+    /* ======== HEADER ======== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 250px;
+      right: 0;
+      height: 60px;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      transition: left 0.3s;
+      z-index: 99;
+    }
+
+    .sidebar.collapsed + header {
+      left: 70px;
+    }
+
+    .menu-toggle {
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #1f2937;
+    }
+
+    /* ======== USER PROFILE ======== */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .user-profile img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .user-profile .name {
+      font-weight: 500;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .dropdown.active {
+      display: block;
+    }
+
+    .dropdown a {
+      display: block;
+      padding: 10px 15px;
+      color: #333;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .dropdown a:hover {
+      background-color: #f3f4f6;
+    }
+
+    /* ======== MAIN CONTENT ======== */
+    main {
+      margin-top: 60px;
+      margin-left: 250px;
+      padding: 20px;
+      flex-grow: 1;
+      transition: margin-left 0.3s;
+    }
+
+    .sidebar.collapsed ~ main {
+      margin-left: 70px;
+    }
+
+    .content {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    /* ======== RESPONSIVE ======== */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 70px;
+      }
+
+      .sidebar ul li span,
+      .sidebar .logo {
+        display: none;
+      }
+
+      header {
+        left: 70px;
+      }
+
+      main {
+        margin-left: 70px;
+      }
+
+      /* Permet d'afficher/cacher la sidebar avec transition fluide */
+      .sidebar.hidden {
+        left: -70px;
+      }
+
+    }
