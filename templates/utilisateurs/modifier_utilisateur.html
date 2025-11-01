@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Modifier utilisateur</title>
+<link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
+</head>
+<body>
+
+<div class="container">
+<h2>Modifier utilisateur</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="username" value="{{ utilisateur.username }}" required>
+    <input type="email" name="email" value="{{ utilisateur.email }}">
+    
+    <select name="role">
+        <option value="ADMIN" {% if utilisateur.role == 'ADMIN' %}selected{% endif %}>Administrateur</option>
+        <option value="GESTIONNAIRE" {% if utilisateur.role == 'GESTIONNAIRE' %}selected{% endif %}>Gestionnaire</option>
+        <option value="UTILISATEUR" {% if utilisateur.role == 'UTILISATEUR' %}selected{% endif %}>Utilisateur simple</option>
+    </select>
+
+    <input type="password" name="password" placeholder="Nouveau mot de passe (optionnel)">
+    <button type="submit">Modifier</button>
+</form>
+</div>
+
+</body>
+</html>

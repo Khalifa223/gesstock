@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Générer un rapport</title>
+<link rel="stylesheet" href="{% static 'css/rapports.css' %}">
+</head>
+
+<body>
+<div class="container">
+    <h2>📝 Générer un rapport</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Choisir type de rapport :</label>
+        <select name="type_rapport" required>
+            <option value="VENTES">Rapport de ventes</option>
+            <option value="ACHATS">Rapport d’achats</option>
+            <option value="PERTE">Rapport de pertes</option>
+            <option value="STOCK">Rapport global</option>
+        </select>
+
+        <button type="submit" class="btn-add">Générer</button>
+        <a href="{% url 'liste_rapports' %}" class="btn-back">Retour</a>
+    </form>
+</div>
+</body>
+</html>

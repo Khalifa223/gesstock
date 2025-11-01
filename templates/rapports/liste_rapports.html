@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Liste des rapports</title>
+<link rel="stylesheet" href="{% static 'css/rapports.css' %}">
+</head>
+
+<body>
+<div class="container">
+    <h2>📊 Rapports générés</h2>
+
+    <a href="{% url 'generer_rapport' %}" class="btn-add">+ Générer un rapport</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Généré par</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for r in rapports %}
+            <tr>
+                <td>{{ r.get_type_rapport_display }}</td>
+                <td>{{ r.date_generation|date:"d/m/Y H:i" }}</td>
+                <td>{{ r.genere_par.username }}</td>
+                <td>
+                    <a href="{% url 'details_rapport' r.id %}" class="btn-view">Voir</a>
+                    <a href="{% url 'exporter_rapport_pdf' r.id %}" class="btn-pdf">PDF</a>
+                    <a href="{% url 'exporter_rapport_excel' r.id %}" class="btn-excel">Excel</a>
+                    <a href="{% url 'exporter_rapport_csv' r.id %}" class="btn-csv">CSV</a>
+                    <a href="{% url 'supprimer_rapport' r.id %}" class="btn-delete">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Aucun rapport disponible.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

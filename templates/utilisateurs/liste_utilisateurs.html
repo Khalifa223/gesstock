@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Liste des utilisateurs</title>
+<link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
+</head>
+<body>
+
+<div class="table-container">
+    <h2>Liste des Utilisateurs</h2>
+
+    <a href="{% url 'ajouter_utilisateur' %}" class="add-btn">+ Ajouter utilisateur</a>
+    <a href="{% url 'deconnexion_utilisateur' %}" class="logout">Déconnexion</a>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nom d’utilisateur</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for user in utilisateurs %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.get_role_display }}</td>
+
+            <td>
+                <a class="edit" href="{% url 'modifier_utilisateur' user.id %}">Modifier</a> |
+                <a class="delete" href="{% url 'supprimer_utilisateur' user.id %}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>
