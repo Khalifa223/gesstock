@@ -1,0 +1,334 @@
+{# Si tu utilises un base.html, décommente la ligne suivante et place le contenu dans le block approprié. #}
+{# {% extends "base.html" %} #}
+{# {% block content %} #}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ titre|default:"Suivi des prix" }}</title>
+
+  <style>
+    /* ===================== BASE / RESET ===================== */
+    :root{
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --primary: #2d9cdb;
+      --muted: #6b7280;
+      --success: #16a34a;
+      --danger: #e11d48;
+      --shadow: 0 6px 18px rgba(17,24,39,0.06);
+      --radius: 10px;
+      --gap: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#111827;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+    }
+    a{color:inherit}
+    h1,h2{margin:0 0 8px 0}
+
+    /* ===================== LAYOUT ===================== */
+    .page {
+      max-width:1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:20px;
+    }
+    .title {
+      display:flex;
+      flex-direction:column;
+    }
+    .title h1{font-size:20px}
+    .title p{color:var(--muted);font-size:13px;margin-top:6px}
+
+    /* ===================== CARDS STATS ===================== */
+    .cards {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:var(--gap);
+      margin-bottom:24px;
+    }
+    .card {
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+      transform:translateY(8px);
+      opacity:0;
+      transition:all 400ms ease;
+      min-height:90px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .card.show { transform:none; opacity:1; }
+
+    .card .left {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .label { color:var(--muted); font-size:13px }
+    .value { font-size:18px; font-weight:600 }
+
+    .card .icon {
+      background: linear-gradient(135deg, rgba(45,156,219,0.12), rgba(45,156,219,0.06));
+      color:var(--primary);
+      width:48px;height:48px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;font-size:20px;
+    }
+
+    /* ===================== TABLE DES MARGES ===================== */
+    .table-wrap{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:var(--shadow);
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:640px;
+    }
+    thead th{
+      text-align:left;
+      font-size:13px;
+      color:var(--muted);
+      padding:12px 8px;
+      border-bottom:1px solid #eef2f7;
+      cursor:pointer;
+      user-select:none;
+    }
+    tbody td{
+      padding:12px 8px;
+      border-bottom:1px solid #f1f5f9;
+      font-size:14px;
+      vertical-align:middle;
+    }
+    tr:hover td{background:#fbfdff}
+
+    /* statut marge */
+    .marge-positive{ color:var(--success); font-weight:600 }
+    .marge-negative{ color:var(--danger); font-weight:600 }
+
+    /* small helper */
+    .right { text-align:right }
+    .muted { color:var(--muted); font-size:13px }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 1000px){
+      .cards { grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width: 700px){
+      body{padding:12px}
+      .cards { grid-template-columns:repeat(1,1fr); }
+      table{min-width:0; font-size:13px}
+      thead th:nth-child(4), tbody td:nth-child(4){display:none}
+    }
+
+    /* ===================== SORT ICON ===================== */
+    .sort-indicator { float:none; margin-left:8px; color:var(--muted); font-size:12px }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HEADER -->
+    <div class="header" role="banner">
+      <div class="title">
+        <h1>{{ titre }}</h1>
+        <p>Analyse et suivi des prix d'achat et de vente — marges par produit</p>
+      </div>
+      <div class="muted">Dernière mise à jour : {{ now|default:None }}</div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="cards" id="cards">
+      <div class="card" data-delay="0">
+        <div class="left">
+          <div class="label">Prix moyen d'achat</div>
+          <div class="value">{{ statistiques.prix_achat_moyen|floatformat:2|default:"0.00" }}</div>
+        </div>
+        <div class="icon">₣</div>
+      </div>
+
+      <div class="card" data-delay="100">
+        <div class="left">
+          <div class="label">Prix moyen de vente</div>
+          <div class="value">{{ statistiques.prix_vente_moyen|floatformat:2|default:"0.00" }}</div>
+        </div>
+        <div class="icon">💲</div>
+      </div>
+
+      <div class="card" data-delay="200">
+        <div class="left">
+          <div class="label">Produit le moins cher (achat)</div>
+          <div class="value">{{ statistiques.prix_achat_min|floatformat:2|default:"0.00" }}</div>
+        </div>
+        <div class="icon">⬇️</div>
+      </div>
+
+      <div class="card" data-delay="300">
+        <div class="left">
+          <div class="label">Produit le plus cher (vente)</div>
+          <div class="value">{{ statistiques.prix_vente_max|floatformat:2|default:"0.00" }}</div>
+        </div>
+        <div class="icon">⬆️</div>
+      </div>
+    </div>
+
+    <!-- TABLE DES MARGES -->
+    <div class="table-wrap" style="margin-top:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div>
+          <strong>Marges par produit</strong>
+          <div class="muted" style="margin-top:6px">Cliquez sur l'en-tête pour trier (Nom / Achat / Vente / Marge)</div>
+        </div>
+        <div class="muted">Total produits : {{ marges|length }}</div>
+      </div>
+
+      <div style="overflow:auto">
+        <table id="margesTable" role="table" aria-label="Table des marges">
+          <thead>
+            <tr>
+              <th data-key="produit">Produit <span class="sort-indicator" id="sort-produit"></span></th>
+              <th data-key="prix_achat" class="right">Prix achat <span class="sort-indicator" id="sort-achat"></span></th>
+              <th data-key="prix_vente" class="right">Prix vente <span class="sort-indicator" id="sort-vente"></span></th>
+              <th data-key="marge" class="right">Marge <span class="sort-indicator" id="sort-marge"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in marges %}
+            <tr>
+              <td>
+                {{ item.produit.nom }}
+                <div class="muted" style="font-size:12px">{{ item.produit.reference|default:"" }}</div>
+              </td>
+              <td class="right" data-value="{{ item.produit.prix_achat|default:0 }}">
+                {{ item.produit.prix_achat|floatformat:2|default:"0.00" }}
+              </td>
+              <td class="right" data-value="{{ item.produit.prix_vente|default:0 }}">
+                {{ item.produit.prix_vente|floatformat:2|default:"0.00" }}
+              </td>
+              {% with m=item.marge %}
+                {% comment %} {% if m|floatformat:2|float > 0 %} {% endcomment %}
+                {% if m > 0 %}
+                <td class="right marge-positive" data-value="{{ m|default:0 }}">{{ m|floatformat:2 }}</td>
+                {% comment %} {% elif m|floatformat:2|float < 0 %} {% endcomment %}
+                {% elif m < 0 %}
+                <td class="right marge-negative" data-value="{{ m|default:0 }}">{{ m|floatformat:2 }}</td>
+                {% else %}
+                <td class="right" data-value="{{ m|default:0 }}">{{ m|floatformat:2 }}</td>
+                {% endif %}
+              {% endwith %}
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="muted">Aucun produit trouvé.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script>
+    // Animation d'entrée des cartes (fade-in séquentiel)
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = Array.from(document.querySelectorAll('.card'));
+      cards.forEach((card, idx) => {
+        const delay = parseInt(card.dataset.delay || (idx * 80), 10);
+        setTimeout(() => card.classList.add('show'), delay);
+      });
+
+      // Initialisation du tri
+      initTableSorting();
+    });
+
+    // Tri du tableau (colonne click -> tri asc/desc)
+    function initTableSorting(){
+      const table = document.getElementById('margesTable');
+      const thead = table.querySelector('thead');
+      const tbody = table.querySelector('tbody');
+      let sortState = { key: null, dir: 1 }; // dir: 1 asc, -1 desc
+
+      function getCellValue(row, key){
+        // On récupère le data-value si présent, sinon le texte
+        const map = {
+          'produit': 0,
+          'prix_achat': 1,
+          'prix_vente': 2,
+          'marge': 3
+        };
+        const cell = row.children[map[key]];
+        const dv = cell.getAttribute('data-value');
+        if (dv !== null) {
+          // valeur numérique
+          return parseFloat(dv) || 0;
+        }
+        // produit : retirer texte secondaire
+        return cell.textContent.trim().toLowerCase();
+      }
+
+      thead.querySelectorAll('th').forEach(th => {
+        th.addEventListener('click', () => {
+          const key = th.dataset.key;
+          if (!key) return;
+          // basculer état tri
+          if (sortState.key === key) sortState.dir *= -1;
+          else { sortState.key = key; sortState.dir = 1; }
+          // tri des lignes
+          const rows = Array.from(tbody.querySelectorAll('tr'));
+          rows.sort((a,b) => {
+            const va = getCellValue(a, key);
+            const vb = getCellValue(b, key);
+            if (typeof va === 'number' && typeof vb === 'number') {
+              return (va - vb) * sortState.dir;
+            }
+            // string compare
+            if (va < vb) return -1 * sortState.dir;
+            if (va > vb) return 1 * sortState.dir;
+            return 0;
+          });
+          // ré-appender
+          rows.forEach(r => tbody.appendChild(r));
+          updateSortIndicators();
+        });
+      });
+
+      function updateSortIndicators(){
+        thead.querySelectorAll('th').forEach(th => {
+          const id = 'sort-' + (th.dataset.key || th.textContent.trim().toLowerCase());
+          const indicator = th.querySelector('.sort-indicator');
+          if (!indicator) return;
+          if (th.dataset.key === sortState.key) {
+            indicator.textContent = sortState.dir === 1 ? '▲' : '▼';
+          } else {
+            indicator.textContent = '';
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>
+
+{# {% endblock %} #}

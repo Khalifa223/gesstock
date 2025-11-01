@@ -1,0 +1,25 @@
+{% extends 'gesstock/base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>Ajouter un Client</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="nom" placeholder="Nom du produit" required>
+        <select name="categorie" id="">
+            <option value="">--Veuillez choisir une catégorie--</option>
+            {% for categorie in categories %}
+                <option value="{{categorie.id}}">{{categorie.nom}}</option>
+            {% endfor %}
+                
+        </select>
+        <input type="number" name="prix_achat" placeholder="Prix d'achat">
+        <input type="number" name="prix_vente" placeholder="Prix de vente">
+        <input type="number" name="seuil_min" placeholder="Seuil Min">
+        <input type="number" name="seuil_max" placeholder="Seuil Max">
+        <input type="number" name="stock_actuel" placeholder="Stock Actuel">
+        <button type="submit">Enregistrer</button>
+    </form>
+    <br>
+    <a href="{% url 'liste_clients' %}">Retour</a>
+</div>
+{% endblock content%}

@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Avg, Min, Max
+from django.http import HttpResponse
 import io
 import barcode
 from barcode.writer import ImageWriter
 from .models import Produit, Categorie
-from django.http import HttpResponse
+
 
 # Create your views here.
 

@@ -1,0 +1,15 @@
+{% extends 'gesstock/base.html' %}
+
+{% block content %}
+  <div class="box">
+    <h2>Supprimer le produit <strong>{{ produit.nom }}</strong>?</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="suppression">
+        <button class="btn-del" type="submit">Oui, supprimer</button>
+        <a class="btn-back" href="{% url 'liste_produits' %}">Annuler</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}
