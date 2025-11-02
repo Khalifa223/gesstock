@@ -28,8 +28,8 @@
             <tr>
                 <td>{{ r.get_type_rapport_display }}</td>
                 <td>{{ r.date_generation|date:"d/m/Y H:i" }}</td>
-                <td>{{ r.genere_par.username }}</td>
-                <td>
+                <td>{{ r.genere_par.username|default:"-" }}</td>
+                
                     <a href="{% url 'details_rapport' r.id %}" class="btn-view">Voir</a>
                     <a href="{% url 'exporter_rapport_pdf' r.id %}" class="btn-pdf">PDF</a>
                     <a href="{% url 'exporter_rapport_excel' r.id %}" class="btn-excel">Excel</a>

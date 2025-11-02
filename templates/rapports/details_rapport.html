@@ -13,7 +13,7 @@
     <h2>📄 {{ titre }}</h2>
 
     <p><strong>Date :</strong> {{ rapport.date_generation|date:"d/m/Y H:i" }}</p>
-    <p><strong>Généré par :</strong> {{ rapport.genere_par.username }}</p>
+    <p><strong>Généré par :</strong> {{ rapport.genere_par.username|default:"-" }}</p>
 
     <h3>Mouvements</h3>
     <table>
