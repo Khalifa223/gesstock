@@ -11,6 +11,14 @@ from client.models import Client
 
 def liste_mouvements(request):
     mouvements = MouvementStock.objects.select_related('produit', 'utilisateur', 'fournisseur', 'client').order_by('-date_mouvement')
+    produits = Produit.objects.select_related('categorie').all()
+    
+    for produit in produits:
+        if produit.stock_actuel <= produit.seuil_min:
+            messages.warning(request, f"Le produit '{produit.nom}' est en rupture ou proche du seuil minimum.")
+        elif produit.stock_actuel >= produit.seuil_max:
+            messages.warning(request, f"Le produit '{produit.nom}' dépasse le seuil maximum défini.")
+    
     return render(request, 'stocks/liste_mouvements.html', {'mouvements': mouvements})
 
 

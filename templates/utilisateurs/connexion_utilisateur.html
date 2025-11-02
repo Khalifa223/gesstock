@@ -1,0 +1,12 @@
+{% extends 'gesstock/base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>Ajouter un Utilisateur</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit">Se connecter</button>
+    </form>
+</div>
+{% endblock content%}
