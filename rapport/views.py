@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
 from django.utils import timezone
@@ -13,11 +14,12 @@ from reportlab.lib.styles import getSampleStyleSheet
 
 # Create your views here.
 
+@login_required
 def liste_rapports(request):
     rapports = Rapport.objects.select_related('genere_par').order_by('-date_generation')
     return render(request, 'rapports/liste_rapports.html', {'rapports': rapports})
 
-
+@login_required
 def details_rapport(request, id):
     """
     Afficher le contenu détaillé d’un rapport.
@@ -33,7 +35,7 @@ def details_rapport(request, id):
         'titre': f"Détails du {rapport.get_type_rapport_display()}"
     })
 
-
+@login_required
 def supprimer_rapport(request, id):
     """
     Supprimer un rapport existant.
@@ -46,7 +48,7 @@ def supprimer_rapport(request, id):
 
     return render(request, 'rapports/supprimer_rapport.html', {'rapport': rapport})
 
-
+@login_required
 def generer_rapport(request):
     """
     Génère un nouveau rapport en fonction du type choisi.
@@ -83,7 +85,7 @@ def generer_rapport(request):
 
     return render(request, 'rapports/generer_rapport.html', {'titre': 'Générer un rapport'})
 
-
+@login_required
 def exporter_rapport_csv(request, id):
     """
     Exporter le contenu d’un rapport au format CSV.
@@ -108,7 +110,7 @@ def exporter_rapport_csv(request, id):
 
     return response
 
-
+@login_required
 def exporter_rapport_excel(request, id):
     """
     Exporter le contenu d’un rapport au format Excel (.xlsx)
@@ -142,7 +144,7 @@ def exporter_rapport_excel(request, id):
     wb.save(response)
     return response
 
-
+@login_required
 def exporter_rapport_pdf(request, id):
     """
     Exporter le contenu d’un rapport au format PDF.

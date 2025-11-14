@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Fournisseur
 
 # Create your views here.
-
+@login_required
 def liste_fournisseurs(request):
     fournisseurs = Fournisseur.objects.all()
     return render(request, 'fournisseurs/liste_fournisseurs.html', {'fournisseurs': fournisseurs})
 
-
+@login_required
 def ajouter_fournisseur(request):
     if request.method == 'POST':
         nom = request.POST.get('nom')
@@ -25,7 +26,7 @@ def ajouter_fournisseur(request):
 
     return render(request, 'fournisseurs/ajouter_fournisseur.html', {'titre': 'Ajouter un fournisseur'})
 
-
+@login_required
 def modifier_fournisseur(request, id):
     fournisseur = get_object_or_404(Fournisseur, id=id)
 
@@ -42,7 +43,7 @@ def modifier_fournisseur(request, id):
         'titre': 'Modifier le fournisseur'
     })
 
-
+@login_required
 def supprimer_fournisseur(request, id):
     fournisseur = get_object_or_404(Fournisseur, id=id)
     if request.method == 'POST':

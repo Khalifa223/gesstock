@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from .models import Client
 
 
 # Create your views here.
 
+@login_required
 def liste_clients(request):
     clients = Client.objects.all()
     return render(request, 'clients/liste_clients.html', {'clients': clients})
 
-
+@login_required
 def ajouter_client(request):
     if request.method == 'POST':
         nom = request.POST.get('nom')
@@ -26,7 +28,7 @@ def ajouter_client(request):
 
     return render(request, 'clients/ajouter_client.html', {'titre': 'Ajouter un client'})
 
-
+@login_required
 def modifier_client(request, id):
     client = get_object_or_404(Client, id=id)
 
@@ -43,7 +45,7 @@ def modifier_client(request, id):
         'titre': 'Modifier le client'
     })
 
-
+@login_required
 def supprimer_client(request, id):
     client = get_object_or_404(Client, id=id)
     if request.method == 'POST':
