@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Utilisateur
 
@@ -24,7 +25,7 @@ def connexion_utilisateur(request):
 
     return render(request, 'utilisateurs/connexion_utilisateur.html')
 
-
+@login_required
 def deconnexion_utilisateur(request):
     """
     Déconnecte l’utilisateur actuellement connecté.
@@ -33,7 +34,8 @@ def deconnexion_utilisateur(request):
     messages.info(request, "Vous avez été déconnecté.")
     return redirect('connexion_utilisateur')
 
-
+@login_required
+@user_passes_test(lambda u: u.role == 'ADMIN')
 def ajouter_utilisateur(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -56,7 +58,8 @@ def ajouter_utilisateur(request):
 
     return render(request, 'utilisateurs/ajouter_utilisateur.html', {'titre': 'Ajouter un utilisateur'})
 
-
+@login_required
+@user_passes_test(lambda u: u.role in ['ADMIN', 'GESTIONNAIRE'])
 def liste_utilisateurs(request):
     """
     Afficher la liste de tous les utilisateurs du système.
@@ -65,7 +68,8 @@ def liste_utilisateurs(request):
     utilisateurs = Utilisateur.objects.all()
     return render(request, 'utilisateurs/liste_utilisateurs.html', {'utilisateurs': utilisateurs})
 
-
+@login_required
+@user_passes_test(lambda u: u.role == 'ADMIN')
 def modifier_utilisateur(request, id):
     """
     Modifier les informations d’un utilisateur existant (par un administrateur).
@@ -90,7 +94,8 @@ def modifier_utilisateur(request, id):
         'titre': 'Modifier un utilisateur'
     })
     
-    
+@login_required
+@user_passes_test(lambda u: u.role == 'ADMIN')
 def supprimer_utilisateur(request, id):
     """
     Supprimer un utilisateur du système (par un administrateur).
@@ -104,7 +109,7 @@ def supprimer_utilisateur(request, id):
 
     return render(request, 'utilisateurs/supprimer_utilisateur.html', {'utilisateur': utilisateur})
 
-
+@login_required
 def profil_utilisateur(request):
     """
     Afficher et mettre à jour le profil de l’utilisateur connecté.

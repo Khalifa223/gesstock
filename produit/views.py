@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Min, Max
 from django.http import HttpResponse
 import io
@@ -9,11 +10,12 @@ from .models import Produit, Categorie
 
 # Create your views here.
 
+@login_required
 def liste_produits(request):
     produits = Produit.objects.select_related('categorie').all()
     return render(request, 'produits/liste_produits.html', {'produits': produits})
 
-
+@login_required
 def ajouter_produit(request):
     categories = Categorie.objects.all()
 
@@ -60,7 +62,7 @@ def ajouter_produit(request):
         'titre': 'Ajouter un produit'
     })
 
-
+@login_required
 def modifier_produit(request, id):
     produit = get_object_or_404(Produit, id=id)
     categories = Categorie.objects.all()
@@ -84,7 +86,7 @@ def modifier_produit(request, id):
         'titre': 'Modifier le produit'
     })
 
-
+@login_required
 def supprimer_produit(request, id):
     produit = get_object_or_404(Produit, id=id)
     if request.method == 'POST':
@@ -93,7 +95,7 @@ def supprimer_produit(request, id):
 
     return render(request, 'produits/supprimer_produit.html', {'produit': produit})
 
-
+@login_required
 def suivi_prix(request):
     """
     Fournit un tableau de bord du suivi des prix d’achat et de vente :
@@ -126,12 +128,12 @@ def suivi_prix(request):
 # ==========================================================
 # CATEGORIES 
 # ==========================================================
-
+@login_required
 def liste_categories(request):
     categories = Categorie.objects.all()
     return render(request, 'produits/categories/liste_categories.html', {'categories': categories})
 
-
+@login_required
 def ajouter_categorie(request):
     if request.method == 'POST':
         nom = request.POST.get('nom')
@@ -141,7 +143,7 @@ def ajouter_categorie(request):
 
     return render(request, 'produits/categories/ajouter_categorie.html', {'titre': 'Ajouter une catégorie'})
 
-
+@login_required
 def modifier_categorie(request, id):
     categorie = get_object_or_404(Categorie, id=id)
 
@@ -156,7 +158,7 @@ def modifier_categorie(request, id):
         'titre': 'Modifier la catégorie'
     })
 
-
+@login_required
 def supprimer_categorie(request, id):
     categorie = get_object_or_404(Categorie, id=id)
     if request.method == 'POST':
@@ -165,7 +167,7 @@ def supprimer_categorie(request, id):
 
     return render(request, 'produits/categories/supprimer_categorie.html', {'categorie': categorie})
 
-
+@login_required
 # Catégoriser les produits 
 def categoriser_produits(request):
     """
@@ -182,7 +184,7 @@ def categoriser_produits(request):
 # ==========================================================
 #   TÉLÉCHARGEMENT DU CODE-BARRES
 # ==========================================================
-
+@login_required
 def telecharger_code_barres(request, id):
     """
     Génère et renvoie l’image du code-barres du produit sélectionné.

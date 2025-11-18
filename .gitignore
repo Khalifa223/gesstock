@@ -2,3 +2,5 @@ script.py
 tests.py
 produit.html
 index.html
+mon_taf/
+db.sqlite3

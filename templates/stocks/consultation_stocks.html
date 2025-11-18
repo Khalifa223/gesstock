@@ -1,0 +1,41 @@
+{% extends 'gesstock/base.html' %}
+
+{% block content %}
+<div class="container">
+
+  <h1>{{ titre }}</h1>
+
+  <!-- Section : tous les produits -->
+  <h2>Tous les produits</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Catégorie</th>
+        <th>Stock actuel</th>
+        <th>Seuil min</th>
+        <th>Seuil max</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for produit in produits %}
+        <tr
+          {% if produit in ruptures %}
+            style="background-color:#ffcccc;"  <!-- rouge clair pour rupture -->
+          {% elif produit in surstocks %}
+            style="background-color:#fff0b3;"  <!-- jaune clair pour surstock -->
+          {% endif %}
+        >
+          <td>{{ produit.nom }}</td>
+          <td>{{ produit.categorie.nom }}</td>
+          <td>{{ produit.stock_actuel }}</td>
+          <td>{{ produit.seuil_min }}</td>
+          <td>{{ produit.seuil_max }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">Aucun produit enregistré.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% endblock content %}

@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dashboard',
     'client',
     'fournisseur',
     'mouvementstock',
@@ -131,3 +132,5 @@ STATICFILES_DIRS = ['static/']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'utilisateur.Utilisateur'
+
+LOGIN_URL = 'connexion_utilisateur'

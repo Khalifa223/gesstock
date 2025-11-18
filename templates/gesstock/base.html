@@ -21,7 +21,7 @@
       </div>
       <ul>
         <li data-page="dashboard">
-          <i class="fa fa-home"></i><span>Tableau de bord</span>
+          <i class="fa fa-home"></i><span><a href="{% url 'dashboard' %}">Tableau de bord</a></span>
         </li>
         <li data-page="produits">
           <i class="fa fa-box"></i><span><a href="{% url 'liste_produits' %}">Produits</a></span>
@@ -33,7 +33,7 @@
           <i class="fa fa-truck"></i><span><a href="{% url 'liste_fournisseurs' %}">Fournisseurs</a></span>
         </li>
         <li data-page="stocks">
-          <i class="fa fa-warehouse"></i><span>Stocks</span>
+          <i class="fa fa-warehouse"></i><span><a href="{% url 'liste_mouvements' %}">Stocks</a></span>
         </li>
         <li data-page="rapports">
           <i class="fa fa-file-alt"></i><span>Rapports</span>
@@ -42,7 +42,7 @@
           <i class="fa fa-chart-line"></i><span>Statistiques</span>
         </li>
         <li data-page="utilisateurs">
-          <i class="fa fa-users"></i><span>Utilisateurs</span>
+          <i class="fa fa-users"></i><span><a href="{% url 'liste_utilisateurs' %}">Utilisateurs</a></span>
         </li>
         <li data-page="parametres">
           <i class="fa fa-cog"></i><span>Paramètres</span>
@@ -68,7 +68,7 @@
       <div class="content" id="mainContent">
         {% block content %}
 
-        {% endblock %}
+        {% endblock content %}
       </div>
     </main>
     <script src="{% static 'js/base.js' %}"></script>

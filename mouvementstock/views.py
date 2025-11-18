@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, F, Count
 from django.contrib import messages
 from .models import MouvementStock
@@ -9,11 +10,20 @@ from client.models import Client
 
 # Create your views here.
 
+@login_required
 def liste_mouvements(request):
     mouvements = MouvementStock.objects.select_related('produit', 'utilisateur', 'fournisseur', 'client').order_by('-date_mouvement')
-    return render(request, 'mouvementstock/liste_mouvements.html', {'mouvements': mouvements})
+    produits = Produit.objects.select_related('categorie').all()
+    
+    for produit in produits:
+        if produit.stock_actuel <= produit.seuil_min:
+            messages.warning(request, f"Le produit '{produit.nom}' est en rupture ou proche du seuil minimum.")
+        elif produit.stock_actuel >= produit.seuil_max:
+            messages.warning(request, f"Le produit '{produit.nom}' dépasse le seuil maximum défini.")
+    
+    return render(request, 'stocks/liste_mouvements.html', {'mouvements': mouvements})
 
-
+@login_required
 def liste_stocks(request):
     """
     Afficher la liste des produits avec leurs niveaux de stock
@@ -40,7 +50,7 @@ def liste_stocks(request):
         'titre': 'Gestion des Stocks'
     })
     
-
+@login_required
 def ajouter_entree(request):
     produits = Produit.objects.all()
     fournisseurs = Fournisseur.objects.all()
@@ -81,7 +91,7 @@ def ajouter_entree(request):
         'titre': 'Nouvelle entrée de stock'
     })
     
-
+@login_required
 def ajouter_sortie(request):
     produits = Produit.objects.all()
     clients = Client.objects.all()
@@ -126,7 +136,7 @@ def ajouter_sortie(request):
         'titre': 'Nouvelle sortie de stock'
     })
 
-
+@login_required
 def modifier_mouvement(request, id):
     mouvement = get_object_or_404(MouvementStock, id=id)
     produits = Produit.objects.all()
@@ -173,7 +183,7 @@ def modifier_mouvement(request, id):
         'titre': 'Modifier le mouvement de stock'
     })
 
-
+@login_required
 def supprimer_mouvement(request, id):
     mouvement = get_object_or_404(MouvementStock, id=id)
     produit = mouvement.produit
@@ -193,12 +203,12 @@ def supprimer_mouvement(request, id):
 
     return render(request, 'mouvementstock/supprimer_mouvement.html', {'mouvement': mouvement})
 
-
+@login_required
 def tableau_stock(request):
     produits = Produit.objects.select_related('categorie').all()
     return render(request, 'mouvementstock/tableau_stock.html', {'produits': produits})
 
-
+@login_required
 def consultation_stocks(request):
     """
     Affiche la liste de tous les produits avec leurs niveaux de stock en temps réel.
@@ -219,7 +229,7 @@ def consultation_stocks(request):
 
     return render(request, 'mouvementstock/consultation_stocks.html', contexte)
 
-
+@login_required
 def produits_en_alerte(request):
     """
     Liste les produits dont le niveau de stock est inférieur ou égal au seuil minimum (alerte de rupture)
@@ -240,7 +250,7 @@ def produits_en_alerte(request):
 # ==========================================================
 # 🔄 LES PRODUITS LES PLUS VENDUS
 # ==========================================================
-
+@login_required
 def produits_plus_vendus(request):
     """
     Statistiques détaillées sur les produits les plus vendus.
@@ -261,7 +271,7 @@ def produits_plus_vendus(request):
 # ==========================================================
 # 🔄 LES FOURNISEURS LES PLUS UTILISES
 # ==========================================================
-
+@login_required
 def fournisseurs_plus_utilises(request):
     """
     Statistiques détaillées sur les fournisseurs les plus sollicités.
