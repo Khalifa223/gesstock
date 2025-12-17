@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -53,6 +55,8 @@ def generer_rapport(request):
     """
     Génère un nouveau rapport en fonction du type choisi.
     """
+@login_required(login_url='/utilisateurs/connexion_utilisateur/')
+def generer_rapport(request):
     if request.method == 'POST':
         type_rapport = request.POST.get('type_rapport')
 

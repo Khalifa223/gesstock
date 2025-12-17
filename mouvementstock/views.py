@@ -85,7 +85,7 @@ def ajouter_entree(request):
             messages.success(request, f"Entrée enregistrée : {quantite} unité(s) ajoutée(s) à '{produit.nom}'.")
         return redirect('liste_mouvements')
 
-    return render(request, 'stocks/ajouter_entree.html', {
+    return render(request, 'mouvementstock/ajouter_entree.html', {
         'produits': produits,
         'fournisseurs': fournisseurs,
         'titre': 'Nouvelle entrée de stock'
@@ -130,7 +130,7 @@ def ajouter_sortie(request):
             messages.success(request, f"Sortie enregistrée : {quantite} unité(s) retirée(s) de '{produit.nom}'.")
         return redirect('liste_mouvements')
 
-    return render(request, 'stocks/ajouter_sortie.html', {
+    return render(request, 'mouvementstock/ajouter_sortie.html', {
         'produits': produits,
         'clients': clients,
         'titre': 'Nouvelle sortie de stock'
@@ -175,7 +175,7 @@ def modifier_mouvement(request, id):
         messages.success(request, f"Mouvement mis à jour pour {mouvement.produit.nom}")
         return redirect('liste_mouvements')
 
-    return render(request, 'stocks/modifier_mouvement.html', {
+    return render(request, 'mouvementstock/modifier_mouvement.html', {
         'mouvement': mouvement,
         'produits': produits,
         'fournisseurs': fournisseurs,
@@ -206,7 +206,7 @@ def supprimer_mouvement(request, id):
 @login_required
 def tableau_stock(request):
     produits = Produit.objects.select_related('categorie').all()
-    return render(request, 'stocks/tableau_stock.html', {'produits': produits})
+    return render(request, 'mouvementstock/tableau_stock.html', {'produits': produits})
 
 @login_required
 def consultation_stocks(request):
@@ -227,7 +227,7 @@ def consultation_stocks(request):
         'titre': 'Consultation du stock en temps réel',
     }
 
-    return render(request, 'stocks/consultation_stocks.html', contexte)
+    return render(request, 'mouvementstock/consultation_stocks.html', contexte)
 
 @login_required
 def produits_en_alerte(request):
@@ -244,7 +244,7 @@ def produits_en_alerte(request):
         'titre': 'Alertes de stock',
     }
 
-    return render(request, 'stocks/produits_en_alerte.html', contexte)
+    return render(request, 'mouvementstock/produits_en_alerte.html', contexte)
 
 
 # ==========================================================

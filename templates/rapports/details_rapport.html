@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Détails Rapport</title>
+<link rel="stylesheet" href="{% static 'css/rapports.css' %}">
+</head>
+
+<body>
+<div class="container">
+
+    <h2>📄 {{ titre }}</h2>
+
+    <p><strong>Date :</strong> {{ rapport.date_generation|date:"d/m/Y H:i" }}</p>
+    <p><strong>Généré par :</strong> {{ rapport.genere_par.username|default:"-" }}</p>
+
+    <h3>Mouvements</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Mouvement</th>
+            <th>Quantité</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for m in mouvements %}
+        <tr>
+            <td>{{ m.produit.nom }}</td>
+            <td>{{ m.get_type_mouvement_display }}</td>
+            <td>{{ m.quantite }}</td>
+            <td>{{ m.date_mouvement|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'liste_rapports' %}" class="btn-back">Retour</a>
+</div>
+</body>
+</html>

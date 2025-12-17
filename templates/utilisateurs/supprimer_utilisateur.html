@@ -1,16 +1,24 @@
-{% extends 'gesstock/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Supprimer utilisateur</title>
+<link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
+</head>
+<body>
 
-{% block content %}
-  <div class="box">
-    <h2>Supprimer l'utilisateur <strong>{{ user.username }}</strong>?</h2>
+<div class="container">
+<h2>Confirmer Suppression</h2>
 
-    <form method="post">
-      {% csrf_token %}
-      <div class="suppression">
-        <button class="btn-del" type="submit">Oui, supprimer</button>
-        <a class="btn-back" href="{% url 'liste_utilisateurs' %}">Annuler</a>
-      </div>
-    </form>
+<p>Voulez-vous supprimer <strong>{{ utilisateur.username }}</strong> ?</p>
 
-  </div>
-{% endblock %}
+<form method="post">
+    {% csrf_token %}
+    <button class="delete-btn" type="submit">Oui, supprimer</button>
+    <a href="{% url 'liste_utilisateurs' %}">Annuler</a>
+</form>
+</div>
+
+</body>
+</html>

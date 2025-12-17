@@ -1,21 +1,21 @@
 {% extends 'gesstock/base.html' %}
 {% block content %}
-<div class="form-container">
-    <h2>Ajouter un Utilisateur</h2>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" value="{{user.username}}" required>
-        <input type="email" name="email" value="{{user.email}}">
-        <select name="role">
-            {% comment %} <option value="">--Veuillez choisir un rôle--</option> {% endcomment %}
-            <option value="{{user.role}}">{{user.role}}</option>
-            <option value="ADMIN">Administrateur</option>    
-            <option value="GESTIONNAIRE">Gestionnaire</option>    
-            <option value="UTILISATEUR">Utilisateur simple</option>    
-        </select>
-        <button type="submit">Enregistrer</button>
-    </form>
-    <br>
-    <a href="{% url 'liste_utilisateurs' %}">Retour</a>
-</div>
-{% endblock content%}
+    <div class="form-container">
+        <h2>Modifier un Utilisateur</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="username" value="{{user.username}}" required>
+            <input type="email" name="email" value="{{user.email}}">
+            <select name="role">
+                <option value="ADMIN" {% if utilisateur.role == 'ADMIN' %}selected{% endif %}>Administrateur</option>
+                <option value="GESTIONNAIRE" {% if utilisateur.role == 'GESTIONNAIRE' %}selected{% endif %}>Gestionnaire</option>
+                <option value="UTILISATEUR" {% if utilisateur.role == 'UTILISATEUR' %}selected{% endif %}>Utilisateur simple</option>
+            </select>
+            <button type="submit">Enregistrer</button>
+        </form>
+        <br>
+        <a href="{% url 'liste_utilisateurs' %}">Retour</a>
+    </div>
+
+{% endblock content %}
+

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Nouvelle Sortie Stock</title>
+<style>
+body{background:#ecf0f1;font-family:Arial;padding:20px;}
+.box{width:400px;margin:auto;background:white;padding:20px;border-radius:8px;
+ box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+select,input,textarea{
+ width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:5px;
+}
+button{
+ width:100%;padding:10px;background:#c0392b;color:white;border:none;border-radius:5px;
+}
+button:hover{background:#e74c3c;}
+a{font-size:14px;color:#2980b9;text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>Ajouter une Sortie</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Produit</label>
+    <select name="produit" required>
+        {% for p in produits %}
+        <option value="{{ p.id }}">{{ p.nom }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Client</label>
+    <select name="client">
+        <option value="">-- Sélectionner --</option>
+        {% for c in clients %}
+        <option value="{{ c.id }}">{{ c.nom }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Quantité</label>
+    <input type="number" name="quantite" required min="1">
+
+    <label>Commentaire</label>
+    <textarea name="commentaire"></textarea>
+
+    <button type="submit">Enregistrer</button>
+</form>
+
+<br>
+<a href="{% url 'liste_mouvements' %}">Retour</a>
+</div>
+</body>
+</html>

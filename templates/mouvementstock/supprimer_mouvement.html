@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Supprimer Mouvement</title>
+<style>
+body{text-align:center;background:#f5f6fa;font-family:Arial;padding:50px;}
+.box{
+ background:white;padding:20px;border-radius:8px;display:inline-block;
+ box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+button{
+ padding:10px 20px;border:none;border-radius:5px;cursor:pointer;
+}
+.del{background:#e74c3c;color:white;}
+.back{background:#7f8c8d;color:white;text-decoration:none;padding:10px 20px;border-radius:5px;}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>Supprimer ce mouvement ?</h2>
+<p><b>{{ mouvement.produit.nom }}</b> - {{ mouvement.quantite }} unité(s)</p>
+
+<form method="post">
+ {% csrf_token %}
+ <button class="del">Oui, supprimer</button>
+ <a class="back" href="{% url 'liste_mouvements' %}">Annuler</a>
+</form>
+</div>
+</body>
+</html>

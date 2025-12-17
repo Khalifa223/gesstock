@@ -1,4 +1,12 @@
-{% extends 'gesstock/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Liste des utilisateurs</title>
+<link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
+</head>
+<body>
 
 {% if messages %}
     
@@ -14,34 +22,33 @@
   <div class="container">
     <h2>Liste des Utilisateurs</h2>
 
-    <div class="top-buttons">
-      <a href="{% url 'ajouter_utilisateur' %}" class="btn btn-add">+ Ajouter Utilisateur</a>
-    </div>
+    <a href="{% url 'ajouter_utilisateur' %}" class="add-btn">+ Ajouter utilisateur</a>
+    <a href="{% url 'deconnexion_utilisateur' %}" class="logout">Déconnexion</a>
 
-    <table class="table">
-      <tr>
-        <th>Nom d'utilisateur</th>
-        <th>Email</th>
-        {% comment %} <th>Adresse</th> {% endcomment %}
-        <th>Rôle</th>
-        <th>Actions</th>
-      </tr>
-      {% for utilisateur in utilisateurs %}
+    <table>
         <tr>
-          <td>{{ utilisateur.username }}</td>
-          {% comment %} <td>{{ utili.contact }}</td> {% endcomment %}
-          <td>{{ utilisateur.email }}</td>
-          <td>{{ utilisateur.role }}</td>
-          <td>
-            <a class="btn btn-edit" href="{% url 'modifier_utilisateur' utilisateur.id %}">Modifier</a>
-            <a class="btn btn-delete" href="{% url 'supprimer_utilisateur' utilisateur.id %}">Supprimer</a>
-          </td>
+            <th>ID</th>
+            <th>Nom d’utilisateur</th>
+            <th>Email</th>
+            <th>Rôle</th>
+            <th>Actions</th>
         </tr>
-      {% empty %}
+
+        {% for user in utilisateurs %}
         <tr>
-          <td colspan="5">Aucun client trouvé</td>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.get_role_display }}</td>
+
+            <td>
+                <a class="edit" href="{% url 'modifier_utilisateur' user.id %}">Modifier</a> |
+                <a class="delete" href="{% url 'supprimer_utilisateur' user.id %}">Supprimer</a>
+            </td>
         </tr>
-      {% endfor %}
+        {% endfor %}
     </table>
-  </div>
-{% endblock %}
+</div>
+
+</body>
+</html>

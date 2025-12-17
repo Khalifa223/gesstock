@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Liste des Mouvements de Stock</title>
+<style>
+body{font-family:Arial;background:#f5f6fa;margin:0;padding:20px;}
+.container{max-width:1100px;margin:auto;}
+h2{text-align:center;color:#2c3e50;}
+.table{
+ width:100%;background:white;border-collapse:collapse;
+ border-radius:8px;overflow:hidden;margin-top:15px;
+}
+.table th,.table td{
+ padding:10px;border-bottom:1px solid #ddd;text-align:left;
+}
+.table th{background:#34495e;color:white;}
+tr:hover{background:#ecf0f1;}
+.badge{
+ padding:5px 8px;border-radius:5px;color:white;font-size:12px;
+}
+.badge-in{background:#27ae60;}
+.badge-out{background:#c0392b;}
+.btn{
+ padding:7px 10px;border-radius:5px;text-decoration:none;color:white;font-size:13px;
+}
+.btn-edit{background:#f39c12;}
+.btn-delete{background:#e74c3c;}
+.top-btns{text-align:right;margin-bottom:10px;}
+.add-btn{
+ background:#8e44ad;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Mouvements de Stock</h2>
+
+<div class="top-btns">
+    <a href="{% url 'ajouter_entree' %}" class="add-btn">+ Ajouter Entrée</a>
+    <a href="{% url 'ajouter_sortie' %}" class="add-btn" style="background:#2980b9">- Ajouter Sortie</a>
+</div>
+
+<table class="table">
+<tr>
+ <th>Date</th>
+ <th>Produit</th>
+ <th>Type</th>
+ <th>Quantité</th>
+ <th>Utilisateur</th>
+ <th>Source/Destination</th>
+ <th>Actions</th>
+</tr>
+
+{% for m in mouvements %}
+<tr>
+ <td>{{ m.date_mouvement|date:"d/m/Y H:i" }}</td>
+ <td>{{ m.produit.nom }}</td>
+ <td>
+   {% if m.type_mouvement == 'ENTREE' %}
+     <span class="badge badge-in">Entrée</span>
+   {% else %}
+     <span class="badge badge-out">Sortie</span>
+   {% endif %}
+ </td>
+ <td>{{ m.quantite }}</td>
+ <td>{{ m.utilisateur }}</td>
+ <td>
+    {% if m.type_mouvement == 'ENTREE' %}
+        {{ m.fournisseur.nom|default:"-" }}
+    {% else %}
+        {{ m.client.nom|default:"-" }}
+    {% endif %}
+ </td>
+ <td>
+    <a href="{% url 'modifier_mouvement' m.id %}" class="btn btn-edit">Modifier</a>
+    <a href="{% url 'supprimer_mouvement' m.id %}" class="btn btn-delete">Supprimer</a>
+ </td>
+</tr>
+{% empty %}
+<tr><td colspan="7">Aucun mouvement enregistré</td></tr>
+{% endfor %}
+</table>
+
+</div>
+</body>
+</html>
