@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.hashers import make_password
 from django.contrib import messages
 from .models import Utilisateur
 
@@ -113,46 +114,57 @@ def supprimer_utilisateur(request, id):
 @login_required
 def profil_utilisateur(request):
     """
-    Afficher et mettre à jour le profil de l’utilisateur connecté.
+    Afficher le profil de l'utilisateur connecté.
     """
     utilisateur_connecter = request.user
     utilisateur = get_object_or_404(Utilisateur, id=utilisateur_connecter.id)
 
-    # if request.method == 'POST':
-    #     utilisateur.email = request.POST.get('email')
-    #     utilisateur.first_name = request.POST.get('first_name')
-    #     utilisateur.last_name = request.POST.get('last_name')
-
-    #     password = request.POST.get('password')
-    #     if password:
-    #         utilisateur.set_password(password)
-    #     utilisateur.save()
-
-    #     messages.success(request, "Profil mis à jour avec succès.")
-    #     return redirect('profil_utilisateur')
-
     return render(request, 'utilisateurs/profil_utilisateur.html', {'utilisateur': utilisateur})
 
+@login_required
+def modifier_profil_utilisateur(request):
+    """
+    Mettre à jour le profil de l'utilisateur connecté.
+    """
+    utilisateur_connecter = request.user
+    utilisateur = get_object_or_404(Utilisateur, id=utilisateur_connecter.id)
 
-# def detail_utilisateur(request):
-#     """
-#     Afficher le profil de l’utilisateur connecté.
-#     """
-#     utilisateur_connecter = request.user
-#     utilisateur = get_object_or_404(Utilisateur, id=utilisateur_connecter.id)
-    
+    if request.method == 'POST':
+        utilisateur.email = request.POST.get('email')
+        utilisateur.first_name = request.POST.get('first_name')
+        utilisateur.last_name = request.POST.get('last_name')
 
-#     if request.method == 'POST':
-#         utilisateur.email = request.POST.get('email')
-#         utilisateur.first_name = request.POST.get('first_name')
-#         utilisateur.last_name = request.POST.get('last_name')
+        utilisateur.save()
 
-#         password = request.POST.get('password')
-#         if password:
-#             utilisateur.set_password(password)
-#         utilisateur.save()
+        messages.success(request, f"Profil de l'utilisateur {utilisateur.username} modifié avec succès.")
+        return redirect('profil_utilisateur')
+    context = {
+        'utilisateur': utilisateur
+    }
+    return render(request, 'utilisateurs/modifier_profil_utilisateur.html', context)
 
-#         messages.success(request, "Profil mis à jour avec succès.")
-#         return redirect('profil_utilisateur')
-
-#     return render(request, 'utilisateurs/profil_utilisateur.html', {'utilisateur': utilisateur})
+@login_required
+def change_password_utilisateur(request):
+    """
+    Changer le mot de passe de l'utilisateur connecté.
+    """
+    utilisateur_connecter = request.user
+    utilisateur = get_object_or_404(Utilisateur, id=utilisateur_connecter.id)
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        old_password = make_password(old_password)
+        if old_password == utilisateur.password:
+            if new_password == confirm_password:
+                utilisateur.set_password(new_password)
+                messages.success(request, "Votre mot de passe a été changé avec succès")
+                return redirect('profil_utilisateur')
+            messages.info(request, "Le nouveau mot de passe et le mot de passe de confirmation doivent être les mêmes")
+            return redirect('change_password_utilisateur')
+        messages.info(request, "Votre mot de passe ancienne n'est pas bonne")
+        return redirect('change_password_utilisateur')
+    context = {
+        'utilisateur': utilisateur
+    }
+    return render(request, "utilisateurs/change_password_utilisateur.html", context)
