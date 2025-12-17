@@ -28,3 +28,7 @@ h2 { color:#333; text-align:center; }
 .btn-edit { background:#f39c12; }
 .btn-delete { background:#e74c3c; }
 .top-buttons { text-align:right; margin-bottom:10px; }
+
+.nodata {
+  text-align: center;
+}

@@ -5,7 +5,7 @@
     <form method="post">
         {% csrf_token %}
         <input type="text" name="username" value="{{user.username}}" required>
-        <input type="email" value="{{user.email}}" >
+        <input type="email" name="email" value="{{user.email}}">
         <select name="role">
             {% comment %} <option value="">--Veuillez choisir un rôle--</option> {% endcomment %}
             <option value="{{user.role}}">{{user.role}}</option>

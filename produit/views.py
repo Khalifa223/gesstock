@@ -89,11 +89,10 @@ def modifier_produit(request, id):
 @login_required
 def supprimer_produit(request, id):
     produit = get_object_or_404(Produit, id=id)
-    if request.method == 'POST':
-        produit.delete()
-        return redirect('liste_produits')
+    produit.delete()
+    return redirect('liste_produits')
 
-    return render(request, 'produits/supprimer_produit.html', {'produit': produit})
+    # return render(request, 'produits/supprimer_produit.html', {'produit': produit})
 
 @login_required
 def suivi_prix(request):
@@ -161,11 +160,11 @@ def modifier_categorie(request, id):
 @login_required
 def supprimer_categorie(request, id):
     categorie = get_object_or_404(Categorie, id=id)
-    if request.method == 'POST':
-        categorie.delete()
-        return redirect('liste_categories')
+    # if request.method == 'POST':
+    categorie.delete()
+    return redirect('liste_categories')
 
-    return render(request, 'produits/categories/supprimer_categorie.html', {'categorie': categorie})
+    # return render(request, 'produits/categories/supprimer_categorie.html', {'categorie': categorie})
 
 @login_required
 # Catégoriser les produits 

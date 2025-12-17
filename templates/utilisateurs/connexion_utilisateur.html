@@ -1,4 +1,15 @@
 {% extends 'gesstock/base.html' %}
+
+{% if messages %}
+    
+    {% for message in messages %}
+        <div class="alert {{message.tags}} m-2" role="alert" id="msg">
+            {{ message }}
+        </div>
+    {% endfor %}
+        
+{% endif %}
+
 {% block content %}
 <div class="form-container">
     <h2>Ajouter un Utilisateur</h2>

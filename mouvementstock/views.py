@@ -188,20 +188,20 @@ def supprimer_mouvement(request, id):
     mouvement = get_object_or_404(MouvementStock, id=id)
     produit = mouvement.produit
 
-    if request.method == 'POST':
+    # if request.method == 'POST':
         # Réajustement du stock selon le type
-        if mouvement.type_mouvement == 'ENTREE':
-            produit.stock_actuel -= mouvement.quantite
-        elif mouvement.type_mouvement == 'SORTIE':
-            produit.stock_actuel += mouvement.quantite
+    if mouvement.type_mouvement == 'ENTREE':
+        produit.stock_actuel -= mouvement.quantite
+    elif mouvement.type_mouvement == 'SORTIE':
+        produit.stock_actuel += mouvement.quantite
 
-        produit.save()
-        mouvement.delete()
+    produit.save()
+    mouvement.delete()
 
-        messages.success(request, f"Mouvement supprimé et stock de {produit.nom} mis à jour.")
-        return redirect('liste_mouvements')
+    messages.success(request, f"Mouvement supprimé et stock de {produit.nom} mis à jour.")
+    return redirect('liste_mouvements')
 
-    return render(request, 'stocks/supprimer_mouvement.html', {'mouvement': mouvement})
+    # return render(request, 'stocks/supprimer_mouvement.html', {'mouvement': mouvement})
 
 @login_required
 def tableau_stock(request):

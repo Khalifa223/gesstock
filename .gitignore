@@ -1,4 +1,6 @@
 script.py
 tests.py
+db.sqlite3
 produit.html
 index.html
+Lib/

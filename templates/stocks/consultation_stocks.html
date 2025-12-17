@@ -6,7 +6,7 @@
   <h1>{{ titre }}</h1>
 
   <!-- Section : tous les produits -->
-  <h2>Tous les produits</h2>
+  <h2>Tous les produits</h2><br>
   <table class="table">
     <thead>
       <tr>
@@ -21,9 +21,19 @@
       {% for produit in produits %}
         <tr
           {% if produit in ruptures %}
-            style="background-color:#ffcccc;"  <!-- rouge clair pour rupture -->
+          
+          {% comment %}
+            rouge clair pour rupture
+          {% endcomment %}
+            
+            style="background-color:#ffcccc;"  
           {% elif produit in surstocks %}
-            style="background-color:#fff0b3;"  <!-- jaune clair pour surstock -->
+          
+          {% comment %}
+            jaune clair pour surstock
+          {% endcomment %}
+            
+            style="background-color:#fff0b3;" 
           {% endif %}
         >
           <td>{{ produit.nom }}</td>

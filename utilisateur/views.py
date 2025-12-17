@@ -65,7 +65,8 @@ def liste_utilisateurs(request):
     Afficher la liste de tous les utilisateurs du système.
     (Accessible uniquement par l’admin ou le gestionnaire)
     """
-    utilisateurs = Utilisateur.objects.all()
+    # utilisateurs = Utilisateur.objects.all()
+    utilisateurs = Utilisateur.objects.order_by('-date_joined')
     return render(request, 'utilisateurs/liste_utilisateurs.html', {'utilisateurs': utilisateurs})
 
 @login_required
@@ -114,19 +115,44 @@ def profil_utilisateur(request):
     """
     Afficher et mettre à jour le profil de l’utilisateur connecté.
     """
-    utilisateur = request.user
+    utilisateur_connecter = request.user
+    utilisateur = get_object_or_404(Utilisateur, id=utilisateur_connecter.id)
 
-    if request.method == 'POST':
-        utilisateur.email = request.POST.get('email')
-        utilisateur.first_name = request.POST.get('first_name')
-        utilisateur.last_name = request.POST.get('last_name')
+    # if request.method == 'POST':
+    #     utilisateur.email = request.POST.get('email')
+    #     utilisateur.first_name = request.POST.get('first_name')
+    #     utilisateur.last_name = request.POST.get('last_name')
 
-        password = request.POST.get('password')
-        if password:
-            utilisateur.set_password(password)
-        utilisateur.save()
+    #     password = request.POST.get('password')
+    #     if password:
+    #         utilisateur.set_password(password)
+    #     utilisateur.save()
 
-        messages.success(request, "Profil mis à jour avec succès.")
-        return redirect('profil_utilisateur')
+    #     messages.success(request, "Profil mis à jour avec succès.")
+    #     return redirect('profil_utilisateur')
 
     return render(request, 'utilisateurs/profil_utilisateur.html', {'utilisateur': utilisateur})
+
+
+# def detail_utilisateur(request):
+#     """
+#     Afficher le profil de l’utilisateur connecté.
+#     """
+#     utilisateur_connecter = request.user
+#     utilisateur = get_object_or_404(Utilisateur, id=utilisateur_connecter.id)
+    
+
+#     if request.method == 'POST':
+#         utilisateur.email = request.POST.get('email')
+#         utilisateur.first_name = request.POST.get('first_name')
+#         utilisateur.last_name = request.POST.get('last_name')
+
+#         password = request.POST.get('password')
+#         if password:
+#             utilisateur.set_password(password)
+#         utilisateur.save()
+
+#         messages.success(request, "Profil mis à jour avec succès.")
+#         return redirect('profil_utilisateur')
+
+#     return render(request, 'utilisateurs/profil_utilisateur.html', {'utilisateur': utilisateur})

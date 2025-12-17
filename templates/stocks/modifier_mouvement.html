@@ -1,24 +1,49 @@
 {% extends 'gesstock/base.html' %}
 {% block content %}
-<div class="form-container">
+  <div class="form-container">
     <h2>Modifier un Stock</h2>
     <form method="post">
-        {% csrf_token %}
-        <select name="categorie" id="">
-            <option value="">--Veuillez choisir une catégorie--</option>
-            {% for categorie in categories %}
-                <option value="{{categorie.id}}">{{categorie.nom}}</option>
-            {% endfor %}
-                
+      {% csrf_token %}
+      <select name="produit">
+        {% comment %} <option value="">--Veuillez choisir un produit--</option> {% endcomment %}
+        {% for produit in produits %}
+          <option value="{{ produit.id }}" 
+          {% if produit.id == mouvement.produit.id %}
+            selected
+          {% endif %}
+            >{{ produit.nom }}</option>
+        {% endfor %}
+      </select>
+
+      {% if mouvement.type_mouvement == 'ENTREE' %}
+        <select name="fournisseur">
+          {% comment %} <option value="">--Veuillez choisir un fournisseur--</option> {% endcomment %}
+          {% for fournisseur in fournisseurs %}
+            <option value="{{ fournisseur.id }}" 
+            {% if fournisseur.id == mouvement.fournisseur.id %}
+              
+            {% endif %}
+              >{{ fournisseur.nom }}</option>
+          {% endfor %}
         </select>
-        <input type="number" name="prix_achat" placeholder="Prix d'achat">
-        <input type="number" name="prix_vente" placeholder="Prix de vente">
-        <input type="number" name="seuil_min" placeholder="Seuil Min">
-        <input type="number" name="seuil_max" placeholder="Seuil Max">
-        <input type="number" name="stock_actuel" placeholder="Stock Actuel">
-        <button type="submit">Enregistrer</button>
+      {% else %}
+        <select name="client">
+          {% comment %} <option value="">--Veuillez choisir un client--</option> {% endcomment %}
+          {% for client in clients %}
+            <option value="{{ client.id }}" 
+            {% if client.id == mouvement.client.id %}
+            selected
+            {% endif %}
+              >{{ client.nom }}</option>
+          {% endfor %}
+        </select>
+      {% endif %}
+
+      <input type="number" name="quantite" value="{{ mouvement.quantite }}" />
+      <textarea name="commentaire">{{ mouvement.commentaire }}</textarea>
+      <button type="submit">Modifier</button>
     </form>
-    <br>
+    <br />
     <a href="{% url 'liste_mouvements' %}">Retour</a>
-</div>
-{% endblock content%}
+  </div>
+{% endblock %}

@@ -2,9 +2,10 @@
 
 {% block content %}
   <div class="container">
-    <h2>Liste des Stocks</h2>
+    <h2>Liste des Stocks</h2><br>
 
     <div class="top-buttons">
+      <a href="{% url 'consultation_stocks' %}" class="btn btn-add">👀 Consulter Stock</a>
       <a href="{% url 'ajouter_entree' %}" class="btn btn-add">+ Ajouter Stock Entrant</a>
       <a href="{% url 'ajouter_sortie' %}" class="btn btn-add">+ Ajouter Stock Sortant</a>
     </div>
@@ -31,7 +32,7 @@
         </tr>
       {% empty %}
         <tr>
-          <td colspan="5">Aucun stock trouvé</td>
+          <td colspan="5" class="nodata">Aucun stock trouvé</td>
         </tr>
       {% endfor %}
     </table>
