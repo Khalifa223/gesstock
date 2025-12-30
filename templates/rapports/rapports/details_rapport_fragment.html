@@ -1,0 +1,46 @@
+<h2>📄 {{ titre }}</h2>
+
+<p><strong>Date :</strong> {{ rapport.date_generation|date:"d/m/Y H:i" }}</p>
+<p><strong>Généré par :</strong> {{ rapport.genere_par.username|default:"-" }}</p>
+
+<h3>Mouvements</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Produit</th>
+        <th>Mouvement</th>
+        <th>Quantité</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for m in mouvements %}
+    <tr>
+        <td>{{ m.produit.nom }}</td>
+        <td>{{ m.get_type_mouvement_display }}</td>
+        <td>{{ m.quantite }}</td>
+        <td>{{ m.date_mouvement|date:"d/m/Y H:i" }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h3>Produits</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Categorie produit</th>
+        <th>Nom du produit</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in produits %}
+    <tr>
+        <td>{{ p.categorie.nom }}</td>
+        <td>{{ p.nom }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<button onclick="fermerDetails()" style="margin-top:15px; padding:8px 12px;">Fermer</button>

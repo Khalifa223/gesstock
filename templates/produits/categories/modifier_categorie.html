@@ -1,0 +1,20 @@
+{% extends 'gesstock/base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>Modifier categorie</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="nom" value="{{categorie.nom}}" required>
+        {% comment %} <select name="categorie" >
+            <option value="{{produit.categorie.id}}">{{produit.categorie}}</option>
+            {% for categorie in categories %}
+                <option value="{{categorie.id}}">{{categorie.nom}}</option>
+            {% endfor %}
+                
+        </select> {% endcomment %}
+        <button type="submit">Enregistrer</button>
+    </form>
+    <br>
+    <a href="{% url 'liste_categories' %}">Retour</a>
+</div>
+{% endblock content%}
