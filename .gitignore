@@ -3,4 +3,9 @@ tests.py
 db.sqlite3
 produit.html
 index.html
+<<<<<<< Updated upstream
 Lib/
+=======
+mon_taf/
+db.sqlite3
+>>>>>>> Stashed changes

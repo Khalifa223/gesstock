@@ -34,14 +34,28 @@ tr:hover{background:#ecf0f1;}
 </head>
 <body>
 <div class="container">
-<h2>Mouvements de Stock</h2>
+  {% if messages %}
+   <ul class="messages">
+       {% for message in messages %}
+           <li class="{{ message.tags }}">{{ message }}</li>
+       {% endfor %}
+   </ul>
+{% endif %}
+<h2>Mouvement de Stock</h2>
+<div class="search-box">
+  <input 
+    type="text"
+    id="searchStockInput"
+    placeholder="🔍 Rechercher un mouvement (produit, utilisateur, type...)" >
+</div>
+
 
 <div class="top-btns">
     <a href="{% url 'ajouter_entree' %}" class="add-btn">+ Ajouter Entrée</a>
     <a href="{% url 'ajouter_sortie' %}" class="add-btn" style="background:#2980b9">- Ajouter Sortie</a>
 </div>
 
-<table class="table">
+<table class="table" id="stockTable">
 <tr>
  <th>Date</th>
  <th>Produit</th>
@@ -81,7 +95,29 @@ tr:hover{background:#ecf0f1;}
 <tr><td colspan="7">Aucun mouvement enregistré</td></tr>
 {% endfor %}
 </table>
-
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  const stockInput = document.getElementById('searchStockInput');
+  const stockTable = document.getElementById('stockTable');
+
+  if (!stockInput || !stockTable) return;
+
+  const stockRows = stockTable.getElementsByTagName('tr');
+
+  stockInput.addEventListener('keyup', function () {
+    const filter = stockInput.value.toLowerCase();
+
+    for (let i = 1; i < stockRows.length; i++) {
+      const rowText = stockRows[i].innerText.toLowerCase();
+      stockRows[i].style.display = rowText.includes(filter) ? '' : 'none';
+    }
+  });
+
+});
+</script>
+
 </body>
 </html>

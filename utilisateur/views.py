@@ -136,12 +136,17 @@ def modifier_profil_utilisateur(request):
 
         utilisateur.save()
 
+<<<<<<< Updated upstream
         messages.success(request, f"Profil de l'utilisateur {utilisateur.username} modifié avec succès.")
         return redirect('profil_utilisateur')
     context = {
         'utilisateur': utilisateur
     }
     return render(request, 'utilisateurs/modifier_profil_utilisateur.html', context)
+=======
+        messages.success(request, "Profil mis à jour avec succès.")
+        return redirect('dashboard')
+>>>>>>> Stashed changes
 
 @login_required
 def change_password_utilisateur(request):

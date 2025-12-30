@@ -1,13 +1,6 @@
+{% extends 'gesstock/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Générer un rapport</title>
-<link rel="stylesheet" href="{% static 'css/rapports.css' %}">
-</head>
-
-<body>
+{% block content %}
 <div class="container">
     <h2>📝 Générer un rapport</h2>
 
@@ -25,6 +18,16 @@
         <button type="submit" class="btn-add">Générer</button>
         <a href="{% url 'liste_rapports' %}" class="btn-back">Retour</a>
     </form>
-</div>
-</body>
-</html>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+

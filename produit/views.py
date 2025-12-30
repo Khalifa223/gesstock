@@ -10,10 +10,25 @@ from .models import Produit, Categorie
 
 # Create your views here.
 
+from django.db.models import Q
+
 @login_required
 def liste_produits(request):
-    produits = Produit.objects.select_related('categorie').all()
-    return render(request, 'produits/liste_produits.html', {'produits': produits})
+    query = request.GET.get('q')
+
+    produits = Produit.objects.select_related('categorie')
+
+    if query:
+        produits = produits.filter(
+            Q(nom__icontains=query) |
+            Q(reference__icontains=query) |
+            Q(categorie__nom__icontains=query)
+        )
+
+    return render(request, 'produits/liste_produits.html', {
+        'produits': produits
+    })
+
 
 @login_required
 def ajouter_produit(request):
@@ -54,7 +69,7 @@ def ajouter_produit(request):
             seuil_max=seuil_max or 0,
             stock_actuel=stock_actuel or 0
         )
-
+        
         return redirect('liste_produits')
 
     return render(request, 'produits/ajouter_produit.html', {

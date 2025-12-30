@@ -9,22 +9,32 @@
       <a href="{% url 'ajouter_entree' %}" class="btn btn-add">+ Ajouter Stock Entrant</a>
       <a href="{% url 'ajouter_sortie' %}" class="btn btn-add">+ Ajouter Stock Sortant</a>
     </div>
-         
-    
-    <table class="table">
+
+    <!-- 🔍 CHAMP DE RECHERCHE -->
+    <div style="margin:15px 0;">
+      <input
+        type="text"
+        id="searchStockInput"
+        placeholder="🔍 Rechercher (type, produit, quantité, date...)"
+        style="width:100%;padding:10px;border-radius:5px;border:1px solid #ccc;"
+      >
+    </div>
+
+    <table class="table" id="stockTable">
       <tr>
         <th>Type Stock</th>
         <th>Produit</th>
-        <th>Quantite</th>
+        <th>Quantité</th>
         <th>Date d'ajout</th>
         <th>Actions</th>
       </tr>
+
       {% for stock in mouvements %}
         <tr>
           <td>{{ stock.type_mouvement }}</td>
           <td>{{ stock.produit }}</td>
           <td>{{ stock.quantite }}</td>
-          <td>{{ stock.date_mouvement }}</td>
+          <td>{{ stock.date_mouvement|date:"d/m/Y H:i" }}</td>
           <td>
             <a class="btn btn-edit" href="{% url 'modifier_mouvement' stock.id %}">Modifier</a>
             <a class="btn btn-delete" href="{% url 'supprimer_mouvement' stock.id %}">Supprimer</a>
@@ -37,4 +47,20 @@
       {% endfor %}
     </table>
   </div>
+
+  <!-- 🧠 SCRIPT DE RECHERCHE -->
+  <script>
+    const input = document.getElementById('searchStockInput');
+    const table = document.getElementById('stockTable');
+    const rows = table.getElementsByTagName('tr');
+
+    input.addEventListener('keyup', function () {
+      const filter = input.value.toLowerCase();
+
+      for (let i = 1; i < rows.length; i++) {
+        const rowText = rows[i].innerText.toLowerCase();
+        rows[i].style.display = rowText.includes(filter) ? '' : 'none';
+      }
+    });
+  </script>
 {% endblock %}
