@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, F, Count
 from django.contrib import messages
+from django.core.paginator import Paginator
 from .models import MouvementStock
 from produit.models import Produit
 from fournisseur.models import Fournisseur
@@ -14,14 +15,20 @@ from client.models import Client
 def liste_mouvements(request):
     mouvements = MouvementStock.objects.select_related('produit', 'utilisateur', 'fournisseur', 'client').order_by('-date_mouvement')
     produits = Produit.objects.select_related('categorie').all()
+    paginator = Paginator(mouvements, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
     for produit in produits:
         if produit.stock_actuel <= produit.seuil_min:
             messages.warning(request, f"Le produit '{produit.nom}' est en rupture ou proche du seuil minimum.")
         elif produit.stock_actuel >= produit.seuil_max:
             messages.warning(request, f"Le produit '{produit.nom}' dépasse le seuil maximum défini.")
-    
-    return render(request, 'stocks/liste_mouvements.html', {'mouvements': mouvements})
+    context = {
+        'mouvements': mouvements,
+        'page_obj': page_obj
+    }
+    return render(request, 'stocks/liste_mouvements.html', context)
 
 @login_required
 def liste_stocks(request):
@@ -110,7 +117,7 @@ def ajouter_sortie(request):
             return redirect('ajouter_sortie')
 
         # Créer le mouvement
-        mouvement = MouvementStock.objects.create(
+        MouvementStock.objects.create(
             produit=produit,
             type_mouvement='SORTIE',
             quantite=quantite,

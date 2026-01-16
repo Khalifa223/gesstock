@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="{% static 'css/ajouter_client.css' %}" />
     <link rel="stylesheet" href="{% static 'css/fournisseur.css' %}" />
     <link rel="stylesheet" href="{% static 'css/supprimer_fournisseur.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rapports.css' %}">
     {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" /> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static 'css/dashboad' %}"> {% endcomment %}
   </head>
 
   <body>
@@ -66,9 +69,18 @@
     <!-- ======== MAIN CONTENT ======== -->
     <main>
       <div class="content" id="mainContent">
+        {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+          </ul>
+        {% endif %}
+
         {% block content %}
 
         {% endblock content %}
+        
       </div>
     </main>
     <script src="{% static 'js/base.js' %}"></script>

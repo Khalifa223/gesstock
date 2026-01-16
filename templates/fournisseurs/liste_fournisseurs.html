@@ -1,7 +1,7 @@
 {% extends 'gesstock/base.html' %}
 
 {% block content %}
-  <div class="container">
+  {% comment %} <div class="container"> {% endcomment %}
     <h2>Liste des Fournisseurs</h2>
 
     <div class="top-buttons">
@@ -13,16 +13,16 @@
         <th>Nom</th>
         <th>Contact</th>
         <th>Adresse</th>
-        <th>Email</th>
+        {% comment %} <th>Email</th> {% endcomment %}
         <th>Actions</th>
       </tr>
 
-      {% for fournisseur in fournisseurs %}
+      {% for fournisseur in page_obj %}
         <tr>
           <td>{{ fournisseur.nom }}</td>
           <td>{{ fournisseur.contact }}</td>
           <td>{{ fournisseur.adresse }}</td>
-          <td>{{ fournisseur.email }}</td>
+          {% comment %} <td>{{ fournisseur.email }}</td> {% endcomment %}
           <td>
             <a class="btn btn-edit" href="{% url 'modifier_fournisseur' fournisseur.id %}">Modifier</a>
             <a class="btn btn-delete" href="{% url 'supprimer_fournisseur' fournisseur.id %}">Supprimer</a>
@@ -34,5 +34,20 @@
         </tr>
       {% endfor %}
     </table>
-  </div>
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">Premier</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+        {% endif %}
+
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Suivante</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Dernier</a>
+        {% endif %}
+      </span>
+    </div>
+  {% comment %} </div> {% endcomment %}
 {% endblock %}

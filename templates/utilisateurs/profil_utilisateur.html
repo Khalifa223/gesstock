@@ -1,27 +1,19 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Mon Profil</title>
-<link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
-</head>
-<body>
+{% extends 'gesstock/base.html' %}
 
-<div class="container">
-<h2>Profil utilisateur</h2>
+{% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    <input type="text" value="{{ utilisateur.username }}" disabled>
-    <input type="text" name="first_name" value="{{ utilisateur.first_name }}" placeholder="Prénom">
-    <input type="text" name="last_name" value="{{ utilisateur.last_name }}" placeholder="Nom">
-    <input type="email" name="email" value="{{ utilisateur.email }}" placeholder="Email">
-    <input type="password" name="password" placeholder="Changer mot de passe">
-    <button type="submit">Mettre à jour</button>
-</form>
+{% comment %} <div class="container"> {% endcomment %}
+    <h2>Profil utilisateur</h2>
 
-</div>
+    <p>Prénom : {{utilisateur.first_name}}</p>
+    <p>Nom : {{utilisateur.last_name}}</p>
+    <p>Nom d'utilisateur : {{utilisateur.username}}</p>
+    <p>Email : {{utilisateur.email}}</p>
+    <p>Rôle : {{utilisateur.role}}</p>
 
-</body>
-</html>
+    <div>
+        <a class="btn-back" href="{% url 'modifier_profil_utilisateur' %}">Modifier profil</a>
+        <a class="btn-back" href="{% url 'change_password_utilisateur' %}">Changer mot de passe</a>
+    </div>
+
+{% endblock content %}

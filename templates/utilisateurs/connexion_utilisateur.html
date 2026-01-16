@@ -1,25 +1,41 @@
-{% extends 'gesstock/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GesStock - Tableau de bord</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/client.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/ajouter_client.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/fournisseur.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/supprimer_fournisseur.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
+    {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" /> {% endcomment %}
+    {% comment %} <link rel="stylesheet" href="{% static 'css/dashboad' %}"> {% endcomment %}
+  </head>
 
-{% if messages %}
+  <body>
     
-    {% for message in messages %}
-        <div class="alert {{message.tags}} m-2" role="alert" id="msg">
-            {{ message }}
+    <!-- ======== MAIN CONTENT ======== -->
+    <main>
+        <div class="form-container">
+            <h2>Se connecter</h2>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <button type="submit">Se connecter</button>
+            </form>
         </div>
-    {% endfor %}
-        
-{% endif %}
-
-{% block content %}
-<div class="form-container">
-    <h2>Ajouter un Utilisateur</h2>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Nom d'utilisateur" required>
-        <input type="password" name="password" placeholder="Mot de passe" required>
-        <button type="submit">Se connecter</button>
-    </form>
-
-</div>
-</body>
+    </main>
+    <script src="{% static 'js/base.js' %}"></script>
+  </body>
 </html>

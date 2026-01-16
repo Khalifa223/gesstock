@@ -70,7 +70,7 @@ def dashboard(request):
     mouvements_data = [
         {
             'date': m.date_mouvement.strftime('%d/%m/%Y %H:%M'),
-            'type': 'in' if m.type_mouvement == 'ENTREE' else 'out',
+            'type': 'Entrée' if m.type_mouvement == 'ENTREE' else 'Sortie',
             'produit': m.produit.nom,
             'quantite': m.quantite,
             'utilisateur': m.utilisateur.username if m.utilisateur else '—',

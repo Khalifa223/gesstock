@@ -1,18 +1,13 @@
+{% extends 'gesstock/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Liste des rapports</title>
-    <link rel="stylesheet" href="{% static 'css/rapports.css' %}">
-</head>
+{% block content %}
 
-<body>
-    <div class="container">
+    {% comment %} <div class="container"> {% endcomment %}
         <h2>📊 Rapports générés</h2>
-
-        <a href="{% url 'generer_rapport' %}" class="btn-add">+ Générer un rapport</a>
+        <div class="top-buttons">
+            <a href="{% url 'generer_rapport' %}" class="btn btn-add">+ Générer un rapport</a>
+        </div>
 
         <table>
             <thead>
@@ -31,16 +26,7 @@
                     <td>{{ r.date_generation|date:"d/m/Y H:i" }}</td>
                     <td>{{ r.genere_par.username|default:"-" }}</td>
                     <td>
-                        <a href="{% url 'details_rapport' r.id %}" class="btn-view" title="Voir">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                <path d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zM12 
-                      17c-2.761 0-5-2.239-5-5s2.239-5 5-5 5 2.239 5 5-2.239 5-5 5zm0-8a3 
-                                     3 0 100 6 3 3 0 000-6z" />
-                            </svg>
-                        </a>
-
-
-
+                        <a href="{% url 'details_rapport' r.id %}" class="btn-view">Voir</a>
                         <a href="{% url 'exporter_rapport_pdf' r.id %}" class="btn-pdf">PDF</a>
                         <a href="{% url 'exporter_rapport_excel' r.id %}" class="btn-excel">Excel</a>
                         <a href="{% url 'exporter_rapport_csv' r.id %}" class="btn-csv">CSV</a>
@@ -54,7 +40,6 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
-</body>
+    {% comment %} </div> {% endcomment %}
 
-</html>
+{% endblock content %}

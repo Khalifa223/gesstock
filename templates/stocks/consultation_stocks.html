@@ -12,8 +12,8 @@
       <tr>
         <th>Nom</th>
         <th>Catégorie</th>
-        <th>Stock actuel</th>
         <th>Seuil min</th>
+        <th>Stock actuel</th>
         <th>Seuil max</th>
       </tr>
     </thead>
@@ -38,8 +38,8 @@
         >
           <td>{{ produit.nom }}</td>
           <td>{{ produit.categorie.nom }}</td>
-          <td>{{ produit.stock_actuel }}</td>
           <td>{{ produit.seuil_min }}</td>
+          <td>{{ produit.stock_actuel }}</td>
           <td>{{ produit.seuil_max }}</td>
         </tr>
       {% empty %}

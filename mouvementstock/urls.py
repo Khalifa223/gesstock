@@ -9,7 +9,7 @@ urlpatterns = [
     path('supprimer_mouvement/<int:id>/', views.supprimer_mouvement, name='supprimer_mouvement'),
     path('tableau_stock/', views.tableau_stock, name='tableau_stock'),
     path('consultation_stocks/', views.consultation_stocks, name='consultation_stocks'),
-    path('produits_en_alerte/', views.produits_en_alerte, name='produits_en_alerte'),
-    path('produits_plus_vendus/', views.produits_plus_vendus, name='produits_plus_vendus'),
-    path('fournisseurs_plus_utilises/', views.fournisseurs_plus_utilises, name='fournisseurs_plus_utilises'),
+    # path('produits_en_alerte/', views.produits_en_alerte, name='produits_en_alerte'),
+    # path('produits_plus_vendus/', views.produits_plus_vendus, name='produits_plus_vendus'),
+    # path('fournisseurs_plus_utilises/', views.fournisseurs_plus_utilises, name='fournisseurs_plus_utilises'),
 ]

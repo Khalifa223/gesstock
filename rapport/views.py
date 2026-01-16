@@ -98,7 +98,7 @@ def exporter_rapport_csv(request, id):
     mouvements = rapport.mouvements.select_related('produit').all()
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = f'attachment; filename="rapport_{rapport.type_rapport.lower()}_{rapport.id}.csv"'
+    response['Content-Disposition'] = f'inline; filename="rapport_{rapport.type_rapport.lower()}_{rapport.id}.csv"'
 
     writer = csv.writer(response)
     writer.writerow(['Produit', 'Type de mouvement', 'Quantité', 'Date', 'Utilisateur'])
@@ -143,7 +143,7 @@ def exporter_rapport_excel(request, id):
     response = HttpResponse(
         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
-    response['Content-Disposition'] = f'attachment; filename="rapport_{rapport.type_rapport.lower()}_{rapport.id}.xlsx"'
+    response['Content-Disposition'] = f'inline; filename="rapport_{rapport.type_rapport.lower()}_{rapport.id}.xlsx"'
 
     wb.save(response)
     return response
@@ -158,7 +158,7 @@ def exporter_rapport_pdf(request, id):
 
     # Configuration de la réponse
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="rapport_{rapport.type_rapport.lower()}_{rapport.id}.pdf"'
+    response['Content-Disposition'] = f'inline; filename="rapport_{rapport.type_rapport.lower()}_{rapport.id}.pdf"'
 
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4)

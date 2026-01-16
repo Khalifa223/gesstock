@@ -1,13 +1,7 @@
+{% extends 'gesstock/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Supprimer un rapport</title>
-<link rel="stylesheet" href="{% static 'css/rapports.css' %}">
-</head>
 
-<body>
+{% block content %}
 <div class="container danger-box">
     <h2>⚠️ Confirmation suppression</h2>
 
@@ -19,5 +13,4 @@
         <a href="{% url 'liste_rapports' %}" class="btn-back">Annuler</a>
     </form>
 </div>
-</body>
-</html>
+{% endblock %}

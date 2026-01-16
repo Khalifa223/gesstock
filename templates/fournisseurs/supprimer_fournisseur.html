@@ -3,16 +3,15 @@
 {% block content %}
 
 
-<div class="box">
+{% comment %} <div class="box"> {% endcomment %}
     <h2>Supprimer le fournisseur <strong>{{ fournisseur.nom }}</strong>?</h2>
-    <p></p>
 
     <form method="post">
         {% csrf_token %}
         <button class="btn-del" type="submit">Oui, supprimer</button>
         <a class="btn-back" href="{% url 'liste_fournisseurs' %}">Annuler</a>
     </form>
-</div>
+{% comment %} </div> {% endcomment %}
 
 
 {% endblock content %}

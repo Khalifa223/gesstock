@@ -1,54 +1,58 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Liste des utilisateurs</title>
-<link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
-</head>
-<body>
+{% extends 'gesstock/base.html' %}
 
-{% if messages %}
-    
-    {% for message in messages %}
-        <div class="alert {{message.tags}} m-2" role="alert" id="msg">
-            {{ message }}
-        </div>
-    {% endfor %}
-        
-{% endif %}
-
-{% comment %} {% block content %} {% endcomment %}
+{% block content %}
   <div class="container">
     <h2>Liste des Utilisateurs</h2>
 
-    <a href="{% url 'ajouter_utilisateur' %}" class="add-btn">+ Ajouter utilisateur</a>
-    <a href="{% url 'deconnexion_utilisateur' %}" class="logout">Déconnexion</a>
+    <div class="top-buttons">
+      <a href="{% url 'ajouter_fournisseur' %}" class="btn btn-add">+ Ajouter Utilisateur</a>
+    </div>
 
-    <table>
-        <tr>
-            <th>ID</th>
+    <div class="search-box">
+      <input 
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Rechercher un produit..."
+      >
+    </div>
+
+    <table class="table" id="utilisateursTable">
+      <tr>
             <th>Nom d’utilisateur</th>
             <th>Email</th>
             <th>Rôle</th>
             <th>Actions</th>
         </tr>
 
-        {% for user in utilisateurs %}
+      {% for utilisateur in utilisateurs %}
         <tr>
-            <td>{{ user.id }}</td>
-            <td>{{ user.username }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.get_role_display }}</td>
-
-            <td>
-                <a class="edit" href="{% url 'modifier_utilisateur' user.id %}">Modifier</a> |
-                <a class="delete" href="{% url 'supprimer_utilisateur' user.id %}">Supprimer</a>
-            </td>
+          <td>{{ utilisateur.username }}</td>
+          <td>{{ utilisateur.email }}</td>
+          <td>{{ utilisateur.get_role_display }}</td>
+          <td>
+            <a class="btn btn-edit" href="{% url 'modifier_utilisateur' utilisateur.id %}">Modifier</a>
+            <a class="btn btn-delete" href="{% url 'supprimer_utilisateur' utilisateur.id %}">Supprimer</a>
+          </td>
         </tr>
-        {% endfor %}
+      {% empty %}
+        <tr>
+          <td colspan="5">Aucun Utilisateur trouvé</td>
+        </tr>
+      {% endfor %}
     </table>
-</div>
+  </div>
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('utilisateursTable');
+    const rows = table.getElementsByTagName('tr');
 
-</body>
-</html>
+    searchInput.addEventListener('keyup', function () {
+      const filter = searchInput.value.toLowerCase();
+
+      for (let i = 1; i < rows.length; i++) {
+        const rowText = rows[i].innerText.toLowerCase();
+        rows[i].style.display = rowText.includes(filter) ? '' : 'none';
+      }
+    });
+  </script>
+{% endblock %}

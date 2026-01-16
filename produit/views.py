@@ -1,10 +1,15 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.db.models import Avg, Min, Max
-from django.http import HttpResponse
 import io
 import barcode
+
 from barcode.writer import ImageWriter
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.contrib import messages
+from django.db.models import Avg, Min, Max, Q
+from django.http import HttpResponse
+
 from .models import Produit, Categorie
 
 
@@ -13,7 +18,16 @@ from .models import Produit, Categorie
 @login_required
 def liste_produits(request):
     produits = Produit.objects.select_related('categorie').all()
-    return render(request, 'produits/liste_produits.html', {'produits': produits})
+
+    paginator = Paginator(produits, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'produits': produits,
+        'page_obj': page_obj
+    }
+    return render(request, 'produits/liste_produits.html', context)
 
 @login_required
 def ajouter_produit(request):
@@ -54,7 +68,7 @@ def ajouter_produit(request):
             seuil_max=seuil_max or 0,
             stock_actuel=stock_actuel or 0
         )
-
+        messages.success(request, f"Produit {nom} ajouté avec succès" )
         return redirect('liste_produits')
 
     return render(request, 'produits/ajouter_produit.html', {
@@ -93,6 +107,14 @@ def supprimer_produit(request, id):
     return redirect('liste_produits')
 
     # return render(request, 'produits/supprimer_produit.html', {'produit': produit})
+
+@login_required
+def detail_produit(request, id):
+    produit = get_object_or_404(Produit, id=id)
+    context = {
+        'produit': produit
+    }
+    return(request, "produits/detail_produit.html", context)
 
 @login_required
 def suivi_prix(request):

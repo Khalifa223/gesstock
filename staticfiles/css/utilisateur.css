@@ -1,0 +1,154 @@
+/* ======= PAGE GLOBALE ======= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: #f4f7fc;
+}
+
+/* ======= FORMULAIRES ======= */
+.form-container {
+    width: 90%;
+    max-width: 450px;
+    margin: 60px auto;
+    background: white;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 15px;
+}
+
+input:focus, select:focus {
+    border: 1px solid #007bff;
+}
+
+/* ======= BOUTONS ======= */
+.btn-primary, .btn-secondary, .btn-danger {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    color: white;
+    transition: 0.2s;
+}
+
+.btn-primary { background: #007bff; }
+.btn-secondary { background: #6c757d; }
+.btn-danger { background: #dc3545; }
+
+.btn-primary:hover { background: #0056b3; }
+.btn-secondary:hover { background: #545b62; }
+.btn-danger:hover { background: #b41f2a; }
+
+/* ======= TABLE UTILISATEURS ======= */
+.table-container {
+    width: 90%;
+    margin: 40px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.table-container h2 {
+    margin-bottom: 15px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+table th {
+    background: #007bff;
+    color: white;
+}
+
+table tr:nth-child(even){
+    background: #f8f8f8;
+}
+
+/* Boutons d'action */
+.action-buttons a {
+    padding: 7px 10px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.action-buttons .edit-btn { background: #28a745; }
+.action-buttons .delete-btn { background: #dc3545; }
+
+/* ======= CONFIRMATION SUPPRESSION ======= */
+.confirm-box {
+    width: 90%;
+    max-width: 430px;
+    margin: 120px auto;
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.confirm-box h2 {
+    margin-bottom: 15px;
+}
+
+.confirm-actions {
+    margin-top: 12px;
+}
+
+.confirm-actions button {
+    width: 140px;
+}
+
+/* ======= MESSAGES FLASH ======= */
+.message-box {
+    width: 90%;
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight:600;
+}
+
+.message-success { background: #d4edda; color:#155724; }
+.message-error { background:#f8d7da; color:#721c24; }

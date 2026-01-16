@@ -19,7 +19,7 @@ def connexion_utilisateur(request):
         if user is not None:
             login(request, user)
             messages.success(request, f"Bienvenue {user.username} !")
-            return redirect('liste_utilisateurs')  # redirige vers tableau de bord après connexion
+            return redirect('dashboard')  # redirige vers tableau de bord après connexion
         else:
             messages.error(request, "Nom d’utilisateur ou mot de passe incorrect.")
             return redirect('connexion_utilisateur')

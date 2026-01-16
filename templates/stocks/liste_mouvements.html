@@ -1,17 +1,24 @@
 {% extends 'gesstock/base.html' %}
 
 {% block content %}
-  <div class="container">
-    <h2>Liste des Stocks</h2><br>
+  {% comment %} <div class="container"> {% endcomment %}
+    <h2>Liste des Stocks</h2><br />
 
     <div class="top-buttons">
       <a href="{% url 'consultation_stocks' %}" class="btn btn-add">👀 Consulter Stock</a>
       <a href="{% url 'ajouter_entree' %}" class="btn btn-add">+ Ajouter Stock Entrant</a>
       <a href="{% url 'ajouter_sortie' %}" class="btn btn-add">+ Ajouter Stock Sortant</a>
     </div>
-         
-    
-    <table class="table">
+
+    <div class="search-box">
+      <input 
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Rechercher un stock..."
+      >
+    </div>
+
+    <table class="table" id="stockTable">
       <tr>
         <th>Type Stock</th>
         <th>Produit</th>
@@ -19,7 +26,7 @@
         <th>Date d'ajout</th>
         <th>Actions</th>
       </tr>
-      {% for stock in mouvements %}
+      {% for stock in page_obj %}
         <tr>
           <td>{{ stock.type_mouvement }}</td>
           <td>{{ stock.produit }}</td>
@@ -36,5 +43,35 @@
         </tr>
       {% endfor %}
     </table>
-  </div>
+
+    <div class="pagination">
+      <span class="step-links">
+        {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; Premier</a>
+          <a href="?page={{ page_obj.previous_page_number }}">Précédent</a>
+        {% endif %}
+
+        <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">Suivante</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">Dernier &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  {% comment %} </div> {% endcomment %}
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('stockTable');
+    const rows = table.getElementsByTagName('tr');
+
+    searchInput.addEventListener('keyup', function () {
+      const filter = searchInput.value.toLowerCase();
+
+      for (let i = 1; i < rows.length; i++) {
+        const rowText = rows[i].innerText.toLowerCase();
+        rows[i].style.display = rowText.includes(filter) ? '' : 'none';
+      }
+    });
+  </script>
 {% endblock %}

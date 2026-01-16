@@ -1,12 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Ajouter utilisateur</title>
-<link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
-</head>
-<body>
+{% extends 'gesstock/base.html' %}
+{% block content %}
 
 <div class="container">
 <h2>Ajouter un utilisateur</h2>
@@ -27,5 +20,4 @@
 </form>
 </div>
 
-</body>
-</html>
+{% endblock content %}
