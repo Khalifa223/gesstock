@@ -15,6 +15,8 @@ from .models import Produit, Categorie
 
 # Create your views here.
 
+from django.db.models import Q
+
 @login_required
 def liste_produits(request):
     produits = Produit.objects.select_related('categorie').all()

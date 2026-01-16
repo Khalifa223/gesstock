@@ -26,7 +26,18 @@
                     <td>{{ r.date_generation|date:"d/m/Y H:i" }}</td>
                     <td>{{ r.genere_par.username|default:"-" }}</td>
                     <td>
-                        <a href="{% url 'details_rapport' r.id %}" class="btn-view">Voir</a>
+                      {% comment %} <a href="" onclick="chargerRapport({{ r.id }})" class="btn-view" title="Voir"> {% endcomment %}
+                      <a href="{% url "details_rapport" r.id%}" class="btn-view" title="Voir">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M12 5c-7.633 0-11 7-11 7s3.367 7 11 7 11-7 11-7-3.367-7-11-7zM12 
+                      17c-2.761 0-5-2.239-5-5s2.239-5 5-5 5 2.239 5 5-2.239 5-5 5zm0-8a3 
+                                     3 0 100 6 3 3 0 000-6z" />
+                            </svg>
+                        </a>
+
+
+
                         <a href="{% url 'exporter_rapport_pdf' r.id %}" class="btn-pdf">PDF</a>
                         <a href="{% url 'exporter_rapport_excel' r.id %}" class="btn-excel">Excel</a>
                         <a href="{% url 'exporter_rapport_csv' r.id %}" class="btn-csv">CSV</a>

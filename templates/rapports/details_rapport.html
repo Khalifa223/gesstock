@@ -13,6 +13,7 @@
         <thead>
         <tr>
             <th>Produit</th>
+            <th>Categorie Produit</th>
             <th>Mouvement</th>
             <th>Quantité</th>
             <th>Date</th>
@@ -22,6 +23,7 @@
         {% for m in mouvements %}
         <tr>
             <td>{{ m.produit.nom }}</td>
+            <td>{{ m.produit.categorie.nom }}</td>
             <td>{{ m.get_type_mouvement_display }}</td>
             <td>{{ m.quantite }}</td>
             <td>{{ m.date_mouvement|date:"d/m/Y H:i" }}</td>
@@ -34,4 +36,4 @@
         <a href="{% url 'liste_rapports' %}" class="btn-back">Retour</a>
     </div>
 
-    {% endblock content %}
+{% endblock content %}

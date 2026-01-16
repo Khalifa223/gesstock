@@ -202,3 +202,21 @@ def exporter_rapport_pdf(request, id):
     buffer.close()
     response.write(pdf)
     return response
+
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
+@login_required
+def ajax_details_rapport(request, id):
+    rapport = get_object_or_404(Rapport, id=id)
+    mouvements = rapport.mouvements.select_related('produit', 'utilisateur').all()
+    produits = rapport.produits.all()
+
+    html = render_to_string("rapports/details_rapport_fragment.html", {
+        "rapport": rapport,
+        "mouvements": mouvements,
+        "produits": produits,
+        "titre": f"Détails du {rapport.get_type_rapport_display()}"
+    })
+
+    return JsonResponse({"html": html})

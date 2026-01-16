@@ -10,11 +10,13 @@
       <a href="{% url 'ajouter_sortie' %}" class="btn btn-add">+ Ajouter Stock Sortant</a>
     </div>
 
-    <div class="search-box">
-      <input 
+    <!-- 🔍 CHAMP DE RECHERCHE -->
+    <div style="margin:15px 0;">
+      <input
         type="text"
-        id="searchInput"
-        placeholder="🔍 Rechercher un stock..."
+        id="searchStockInput"
+        placeholder="🔍 Rechercher (type, produit, quantité, date...)"
+        style="width:100%;padding:10px;border-radius:5px;border:1px solid #ccc;"
       >
     </div>
 
@@ -22,7 +24,7 @@
       <tr>
         <th>Type Stock</th>
         <th>Produit</th>
-        <th>Quantite</th>
+        <th>Quantité</th>
         <th>Date d'ajout</th>
         <th>Actions</th>
       </tr>
@@ -31,7 +33,7 @@
           <td>{{ stock.type_mouvement }}</td>
           <td>{{ stock.produit }}</td>
           <td>{{ stock.quantite }}</td>
-          <td>{{ stock.date_mouvement }}</td>
+          <td>{{ stock.date_mouvement|date:"d/m/Y H:i" }}</td>
           <td>
             <a class="btn btn-edit" href="{% url 'modifier_mouvement' stock.id %}">Modifier</a>
             <a class="btn btn-delete" href="{% url 'supprimer_mouvement' stock.id %}">Supprimer</a>

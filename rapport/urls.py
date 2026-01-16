@@ -9,4 +9,6 @@ urlpatterns = [
     path('exporter/csv/<int:id>/', views.exporter_rapport_csv, name='exporter_rapport_csv'),
     path('exporter/excel/<int:id>/', views.exporter_rapport_excel, name='exporter_rapport_excel'),
     path('exporter/pdf/<int:id>/', views.exporter_rapport_pdf, name='exporter_rapport_pdf'),
+    path('ajax/details/<int:id>/', views.ajax_details_rapport, name='ajax_details_rapport'),
+
 ]

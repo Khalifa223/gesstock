@@ -10,29 +10,24 @@
           <div class="muted">Tableau de bord - Gestion des stocks</div>
         </div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button class="icon-btn" id="themeToggle"><i class="fa fa-moon"></i></button>
+      <div class="kpi-icon kpi-blue">
+        <i class="fa fa-chart-bar"></i>
       </div>
-    </div> {% endcomment %}
+    </div>
+    {% endfor %}
+  </div>
 
-    <!-- GRID -->
-    <div class="grid">  
-      <!-- MAIN COLUMN -->
-      <div class="main-col">
+  <!-- CHARTS -->
+  <div class="charts">
+    <div class="chart-card">
+      <strong>Évolution entrées / sorties</strong>
+      <canvas id="chartInOut"></canvas>
+    </div>
 
-        <!-- KPI CARDS -->
-        <div class="kpis">
-          <!-- mêmes cartes KPI -->
-          {% for label, value in kpis.items %}
-          <div class="card">
-            <div>
-              <div class="muted">{{ label|capfirst }}</div>
-              <div>{{ value }}</div>
-            </div>
-            <div class="kpi-icon kpi-blue"><i class="fa fa-chart-bar"></i></div>
-          </div>
-          {% endfor %}
-        </div>
+    <div class="chart-card">
+      <strong>Répartition par catégorie</strong>
+      <canvas id="chartCategories"></canvas>
+    </div>
 
         <!-- CHARTS -->
         <div class="charts">
@@ -137,13 +132,44 @@
       </div> {% endcomment %}
     </div>
 
-  <!-- === SCRIPTS === -->
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <strong>Derniers mouvements</strong>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Produit</th>
+          <th>Qté</th>
+          <th>Utilisateur</th>
+          <th>Commentaire</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in mouvements %}
+        <tr>
+          <td>{{ m.date }}</td>
+          <td>
+            <span class="badge {% if m.type == 'in' %}in{% else %}out{% endif %}">
+              {{ m.type|yesno:"Entrée,Sortie" }}
+            </span>
+          </td>
+          <td>{{ m.produit }}</td>
+          <td>{{ m.quantite }}</td>
+          <td>{{ m.utilisateur }}</td>
+          <td>{{ m.commentaire }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="muted">Aucun mouvement récent</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
-    document.querySelectorAll('.card').forEach((c, i) => {
-      setTimeout(()=> c.classList.add('show'), 100 * i);
-    });
+{% comment %} </div> {% endcomment %}
 
     // Données Django
     const evolution = {{ evolution|safe }};

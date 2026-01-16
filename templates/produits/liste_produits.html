@@ -1,7 +1,12 @@
 {% extends 'gesstock/base.html' %}
 
 {% block content %}
+<<<<<<< HEAD
   {% comment %} <div class="container"> {% endcomment %}
+=======
+<<<<<<< Updated upstream
+  <div class="container">
+>>>>>>> 85e52273f1038eab69c2f4954f69f9b256f97151
     <h2>Liste des Produits</h2>
 
     <div class="top-buttons">
@@ -46,6 +51,7 @@
         </tr>
       {% endfor %}
     </table>
+<<<<<<< HEAD
     <div class="pagination">
       <span class="step-links">
         {% if page_obj.has_previous %}
@@ -77,4 +83,71 @@
       }
     });
   </script>
+=======
+=======
+<div class="container">
+  <h2>Liste des Produits</h2>
+  <div class="top-buttons">
+    <a href="{% url 'ajouter_produit' %}" class="btn btn-add">+ Ajouter Produit</a>
+>>>>>>> Stashed changes
+  </div>
+
+    <!-- CHAMP DE RECHERCHE -->
+<div class="search-box">
+  <input 
+    type="text"
+    id="searchInput"
+    placeholder="🔍 Rechercher un produit..."
+  >
+</div>
+
+<table class="table" id="produitsTable">
+
+    <tr>
+      <th>Nom</th>
+      <th>Référence</th>
+      <th>Catégorie</th>
+      <th>Prix d'achat</th>
+      <th>Prix de vente</th>
+      <th>Stock actuel</th>
+      <th>Actions</th>
+    </tr>
+
+    {% for produit in produits %}
+    <tr>
+      <td>{{ produit.nom }}</td>
+      <td>{{ produit.reference }}</td>
+      <td>{{ produit.categorie }}</td>
+      <td>{{ produit.prix_achat }}</td>
+      <td>{{ produit.prix_vente }}</td>
+      <td>{{ produit.stock_actuel }}</td>
+      <td>
+        <a class="btn btn-edit" href="{% url 'modifier_produit' produit.id %}">Modifier</a>
+        <a class="btn btn-delete" href="{% url 'supprimer_produit' produit.id %}">Supprimer</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="7">Aucun produit trouvé</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const table = document.getElementById('produitsTable');
+  const rows = table.getElementsByTagName('tr');
+
+  searchInput.addEventListener('keyup', function () {
+    const filter = searchInput.value.toLowerCase();
+
+    for (let i = 1; i < rows.length; i++) {
+      const rowText = rows[i].innerText.toLowerCase();
+      rows[i].style.display = rowText.includes(filter) ? '' : 'none';
+    }
+  });
+</script>
+
+>>>>>>> 85e52273f1038eab69c2f4954f69f9b256f97151
 {% endblock %}

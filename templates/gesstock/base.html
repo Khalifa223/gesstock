@@ -6,16 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GesStock - Tableau de bord</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/rapports.css' %}">
     <link rel="stylesheet" href="{% static 'css/client.css' %}" />
     <link rel="stylesheet" href="{% static 'css/ajouter_client.css' %}" />
     <link rel="stylesheet" href="{% static 'css/fournisseur.css' %}" />
     <link rel="stylesheet" href="{% static 'css/supprimer_fournisseur.css' %}" />
     <link rel="stylesheet" href="{% static 'css/utilisateur.css' %}">
     <link rel="stylesheet" href="{% static 'css/rapports.css' %}">
+<<<<<<< Updated upstream
     {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" /> {% endcomment %}
     {% comment %} <link rel="stylesheet" href="{% static 'css/dashboad' %}"> {% endcomment %}
   </head>
+=======
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+>>>>>>> Stashed changes
 
+  </head>
   <body>
     <!-- ======== SIDEBAR ======== -->
     <div class="sidebar" id="sidebar">
@@ -32,15 +39,22 @@
         <li data-page="stocks">
           <i class="fa fa-warehouse"></i><span><a href="{% url 'liste_mouvements' %}">Stocks</a></span>
         </li>
+<<<<<<< Updated upstream
         <li data-page="rapports">
           <i class="fa fa-file-alt"></i><a href="{% url 'liste_rapports' %}">Rapports</a><span></span>
         </li>
+=======
+        <li data-page="categorie">
+          <i class="fa fa-box"></i><span><a href="{% url 'liste_categories' %}">Categorie</a></span>
+        </li>      
+>>>>>>> Stashed changes
         <li data-page="clients">
           <i class="fa fa-user"></i><span><a href="{% url 'liste_clients' %}">Clients</a></span>
         </li>
         <li data-page="fournisseurs">
           <i class="fa fa-truck"></i><span><a href="{% url 'liste_fournisseurs' %}">Fournisseurs</a></span>
         </li>
+<<<<<<< Updated upstream
         {% comment %} <li data-page="stats">
           <i class="fa fa-chart-line"></i><span>Statistiques</span>
         </li> {% endcomment %}
@@ -50,6 +64,20 @@
         {% comment %} <li data-page="parametres">
           <i class="fa fa-cog"></i><span>Paramètres</span>
         </li> {% endcomment %}
+=======
+        <li data-page="rapports">
+          <i class="fa fa-file-alt"></i><span><a href="{% url "liste_rapports" %}">Rapports</a></span>
+        </li>
+        <!-- <li data-page="stats">
+          <i class="fa fa-chart-line"></i><span>Statistiques</span>
+        </li> -->
+        <li data-page="utilisateurs">
+          <i class="fa fa-users"></i><span><a href="{% url 'liste_utilisateurs' %}">Utilisateurs</a></span>
+        </li>
+        <!-- <li data-page="parametres">
+          <i class="fa fa-cog"></i><span>Paramètres</span>
+        </li> -->
+>>>>>>> Stashed changes
       </ul>
     </div>
 
@@ -59,9 +87,15 @@
       <div class="user-profile" id="userProfile">
         <img src="https://i.pravatar.cc/150?img=12" alt="User" />
         <span class="name">Admin</span>
+        
         <div class="dropdown" id="dropdownMenu">
+<<<<<<< Updated upstream
           <a href="{% url 'profil_utilisateur' %}">Profil</a>
           <a href="{% url 'deconnexion_utilisateur' %}">Déconnexion</a>
+=======
+          <a href="{% url 'profil_utilisateur'%}">Profil</a>
+          <a href="{% url 'deconnexion_utilisateur'%}">Déconnexion</a>
+>>>>>>> Stashed changes
         </div>
       </div>
     </header>
@@ -69,20 +103,26 @@
     <!-- ======== MAIN CONTENT ======== -->
     <main>
       <div class="content" id="mainContent">
-        {% if messages %}
-          <ul class="messages">
-              {% for message in messages %}
-              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-              {% endfor %}
-          </ul>
-        {% endif %}
-
         {% block content %}
 
         {% endblock content %}
-        
       </div>
     </main>
     <script src="{% static 'js/base.js' %}"></script>
+
+
+
+    <script>
+  // Disparition automatique des messages
+  setTimeout(function () {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+      alert.style.transition = "opacity 0.5s ease";
+      alert.style.opacity = "0";
+      setTimeout(() => alert.remove(), 500); // Supprime après la fade-out
+    });
+  }, 30000); // 30000 = 3 secondes (change pour 30000 si tu veux 30 sec)
+</script>
+
   </body>
 </html>
